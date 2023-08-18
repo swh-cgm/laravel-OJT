@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -18,27 +21,34 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Index function
+     *
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $users = DB::table('users')->get();
+        $users = $this->userService->getAllUser();
 
         return view('users.index', ['users' => $users]);
     }
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('users.create');
     }
 
+
     /**
      * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return void
      */
-
     public function store(Request $request)
     {
         $request->validate([
@@ -49,49 +59,70 @@ class UserController extends Controller
             'img' => 'required|image',
             'role' => 'required'
         ]);
-        
-        $data = $this->userService->insert($request); 
-        return redirect('index');
+
+        $data = $this->userService->insert($request);
+        return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 
     /**
-     * Display the specified resource.
+     * show user detail
+     *
+     * @param integer $id
+     * @return mixed
      */
-    public function show($id)
+    public function show(int $id): mixed
     {
         $data = $this->userService->getUserById($id);
-        if($data!=null){
+        if ($data != null) {
             return view('users.detail', ['user' => $data]);
-        }
-        else{
-            return redirect('index');
+        } else {
+            return redirect()->route('users.index')->with('failed', 'User Does Not Exist');
         }
 
     }
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param integer $id
+     * @return View
      */
-    public function edit(User $user)
+    public function edit(int $id): View
     {
-        //
+        $data = $this->userService->getUserById($id);
+        return view('users.edit', ['user' => $data]);
     }
+
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return void
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'img' => 'image',
+            'role' => 'required'
+        ]);
+        $data = $this->userService->update($request);
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param integer $id
+     * @return void
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
-        //
+        $data = $this->userService->delete($id);
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
-
-
 }
