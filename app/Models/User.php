@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $fillable = [
-        'email','password','name','img','role', 'created_by', 'updated_by'
+        'email',
+        'password',
+        'name',
+        'img',
+        'role',
+        'created_by',
+        'updated_by'
     ];
 
     use HasFactory;

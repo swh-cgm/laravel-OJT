@@ -20,7 +20,7 @@ class PostFactory extends Factory
             'title'=>$this->faker->text,
             'description'=>$this->faker->text,
             'public_flag'=>true,
-            'created_by'=>rand(1,5)
+            'created_by'=>rand(2,6)
         ];
     }
 }

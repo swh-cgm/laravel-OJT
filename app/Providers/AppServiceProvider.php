@@ -9,9 +9,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function register()
     {
-        //
+        $this->app->bind('App\Contracts\Services\UserServiceInterface','App\Services\UserService');
+        $this->app->bind('App\Contracts\Dao\UserDaoInterface','App\Dao\UserDao');
     }
 
     /**

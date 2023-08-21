@@ -17,9 +17,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('public_flag')->comment('true for public. false for private');
             $table->integer('created_by')->comment('created user id');
-            // $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('users');
             $table->integer('updated_by')->nullable();
-            // $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
             $table->timestamps();
         });
     }
