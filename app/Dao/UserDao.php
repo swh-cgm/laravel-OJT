@@ -5,16 +5,17 @@ use App\Contracts\Dao\UserDaoInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 
 class UserDao implements UserDaoInterface
 {
     /**
      * Insert Data
      *
-     * @param [type] $insertData
+     * @param array $insertData
      * @return void
      */
-    public function insert($insertData): void
+    public function insert(array $insertData): void
     {
         User::create($insertData);
     }
@@ -22,10 +23,10 @@ class UserDao implements UserDaoInterface
     /**
      * Get Users By Id
      *
-     * @param [type] $id
+     * @param int $id
      * @return User
      */
-    public function getUserById($id): User
+    public function getUserById(int $id): User
     {
         $data = User::find($id);
         return $data;
@@ -34,10 +35,10 @@ class UserDao implements UserDaoInterface
     /**
      * Delete User
      *
-     * @param [type] $id
+     * @param int $id
      * @return void
      */
-    public function delete($id): void
+    public function delete(int $id): void
     {
         User::whereId($id)->delete();
     }
@@ -45,11 +46,11 @@ class UserDao implements UserDaoInterface
     /**
      * Update User
      *
-     * @param [type] $updateData
+     * @param array $updateData
      * @param integer $id
      * @return void
      */
-    public function update($updateData, int $id): void
+    public function update(array $updateData, int $id): void
     {
         $user = User::find($id);
         $user->name = $updateData['name'];

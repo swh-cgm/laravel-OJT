@@ -1,12 +1,15 @@
 <?php
 namespace App\Contracts\Services;
 
+use Illuminate\Http\Request;
+
 interface UserServiceInterface
 {
     public function insert(Request $request);
-    public function getUserById($id);
 
-    public function delete($id);
+    public function getUserById(int $id);
+
+    public function delete(int $id);
 
     public function update(Request $request);
 

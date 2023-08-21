@@ -2,12 +2,13 @@
 namespace App\Contracts\Dao;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 
 interface UserDaoInterface
 {
-    public function insert(Request $insertData);
-    public function getUserById($id);
-    public function delete($id);
-    public function update(Request $updateData, int $id);
+    public function insert(array $insertData);
+    public function getUserById(int $id);   
+    public function delete(int $id);
+    public function update(array $updateData, int $id);
     public function getAllUser();
 }

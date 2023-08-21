@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Dao\UserDao;
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Support\Collection;
@@ -20,10 +21,10 @@ class UserService implements UserServiceInterface
     /**
      * insert user
      *
-     * @param [type] $request
+     * @param Request $request
      * @return null
      */
-    public function insert($request): null
+    public function insert(Request $request): null
     {
         $encrypted = Hash::make($request->password);
 
@@ -47,10 +48,10 @@ class UserService implements UserServiceInterface
     /**
      * get user by Id
      *
-     * @param [type] $id
+     * @param int $id
      * @return User
      */
-    public function getUserById($id): User
+    public function getUserById(int $id): User
     {
         $data = $this->userDao->getUserById($id);
         return $data;
@@ -59,10 +60,10 @@ class UserService implements UserServiceInterface
     /**
      * Delete user
      *
-     * @param [type] $id
+     * @param int $id
      * @return null
      */
-    public function delete($id): null
+    public function delete(int $id): null
     {
         return $this->userDao->delete($id);
     }
@@ -70,10 +71,10 @@ class UserService implements UserServiceInterface
     /**
      * update user
      *
-     * @param [type] $request
+     * @param Request $request
      * @return null
      */
-    public function update($request): null
+    public function update(Request $request): null
     {
         if ($request->img) {
             $filename = $request->img->getClientOriginalName();
