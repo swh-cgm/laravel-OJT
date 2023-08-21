@@ -6,7 +6,7 @@
 
     <div class="form-content">
         <div class="form-title">
-            <p>Edit User</p>
+            <h3>Edit User</h3>
         </div>
         <div>
             <input name="id" name="id" id="id" type="hidden" @if ($errors->any()) value="{{old('id')}}" @else value="{{ $user->id }}" @endif>
@@ -46,10 +46,10 @@
         @endif
         <div>
             <label for="user-role">Admin</label>
-            <input type="radio" name="role" id="admin-role" value="1" {{$user->role == 1 ? 'checked' : ''}}>
+            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}">
 
             <label for="user-role">Member</label>
-            <input type="radio" name="role" id="user-role" value="2" {{$user->role == 2 ? 'checked' : ''}}>
+            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}">
         </div>
         @if ($errors->has('role'))
         <div>

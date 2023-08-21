@@ -5,7 +5,7 @@
     @csrf
     <div class="form-content">
         <div class="form-title">
-            <p>Add New User</p>
+            <h3>Add New User</h3>
         </div>
         <div>
             <label for="img">Profile Picture</label><br>
@@ -60,10 +60,10 @@
         @endif
         <div>
             <label for="user-role">Admin</label>
-            <input type="radio" name="role" id="admin-role" value="1">
+            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}">
 
             <label for="user-role">Member</label>
-            <input type="radio" name="role" id="user-role" value="2">
+            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}">
         </div>
         @if ($errors->has('role'))
         <div>
@@ -76,7 +76,5 @@
     </div>
 
 </form>
-
-
 
 @endsection

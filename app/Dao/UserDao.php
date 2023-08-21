@@ -4,7 +4,7 @@ namespace App\Dao;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Ramsey\Collection\Collection;
+use Illuminate\Support\Collection;
 
 class UserDao implements UserDaoInterface
 {
@@ -14,13 +14,13 @@ class UserDao implements UserDaoInterface
      * @param [type] $insertData
      * @return void
      */
-    public function insert($insertData)
+    public function insert($insertData): void
     {
         User::create($insertData);
     }
 
     /**
-     * get user by id
+     * Get Users By Id
      *
      * @param [type] $id
      * @return User
@@ -37,7 +37,7 @@ class UserDao implements UserDaoInterface
      * @param [type] $id
      * @return void
      */
-    public function delete($id)
+    public function delete($id): void
     {
         User::whereId($id)->delete();
     }
@@ -49,7 +49,7 @@ class UserDao implements UserDaoInterface
      * @param integer $id
      * @return void
      */
-    public function update($updateData, int $id)
+    public function update($updateData, int $id): void
     {
         $user = User::find($id);
         $user->name = $updateData['name'];
@@ -62,14 +62,13 @@ class UserDao implements UserDaoInterface
     }
 
     /**
-     * get all user
+     * Get All User
      *
-     * @return void
+     * @return Collection
      */
-    public function getAllUser()
+    public function getAllUser(): Collection
     {
         $users = DB::table('users')->oldest('updated_at')->get();
         return $users;
     }
 }
-?>

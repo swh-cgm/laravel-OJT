@@ -11,5 +11,3 @@ interface UserDaoInterface
     public function update(Request $updateData, int $id);
     public function getAllUser();
 }
-
-?>

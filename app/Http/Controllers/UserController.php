@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
 use App\Contracts\Services\UserServiceInterface;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -29,6 +26,11 @@ class UserController extends Controller
     {
         $users = $this->userService->getAllUser();
 
+        error_log("Role".User::ADMIN_ROLE);
+        error_log("Role".User::MEMBER_ROLE);
+        error_log("Role".User::ADMIN);
+        error_log("Role".User::MEMBER);
+
         return view('users.index', ['users' => $users]);
     }
 
@@ -42,14 +44,13 @@ class UserController extends Controller
         return view('users.create');
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return void
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|max:255',
@@ -93,15 +94,14 @@ class UserController extends Controller
         return view('users.edit', ['user' => $data]);
     }
 
-
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
      * @param User $user
-     * @return void
+     * @return RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $request->validate([
             'name' => 'required|max:255',
@@ -118,9 +118,9 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param integer $id
-     * @return void
+     * @return RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $data = $this->userService->delete($id);
         return redirect()->route('users.index')->with('success', 'User deleted successfully');

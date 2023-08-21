@@ -1,9 +1,11 @@
 <?php
 namespace App\Services;
 
+use App\Dao\UserDao;
 use App\Models\User;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\UserServiceInterface;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class UserService implements UserServiceInterface
@@ -19,9 +21,9 @@ class UserService implements UserServiceInterface
      * insert user
      *
      * @param [type] $request
-     * @return void
+     * @return null
      */
-    public function insert($request)
+    public function insert($request): null
     {
         $encrypted = Hash::make($request->password);
 
@@ -58,9 +60,9 @@ class UserService implements UserServiceInterface
      * Delete user
      *
      * @param [type] $id
-     * @return void
+     * @return null
      */
-    public function delete($id)
+    public function delete($id): null
     {
         return $this->userDao->delete($id);
     }
@@ -69,18 +71,16 @@ class UserService implements UserServiceInterface
      * update user
      *
      * @param [type] $request
-     * @return void
+     * @return null
      */
-    public function update($request)
+    public function update($request): null
     {
-
         if ($request->img) {
             $filename = $request->img->getClientOriginalName();
             $request->img->storeAs('UserImages', $filename, 'public');
         } else {
             $filename = null;
         }
-
 
         $updateData = [
             'name' => $request->name,
@@ -90,20 +90,16 @@ class UserService implements UserServiceInterface
             'created_by' => 1
         ];
 
-
-
         return $this->userDao->update($updateData, $request->id);
     }
 
     /**
      * Get all user
      *
-     * @return void
+     * @return Collection
      */
-    public function getAllUser()
+    public function getAllUser(): Collection
     {
         return $this->userDao->getAllUser();
     }
 }
-
-?>

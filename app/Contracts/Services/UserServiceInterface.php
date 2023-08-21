@@ -12,4 +12,3 @@ interface UserServiceInterface
 
     public function getAllUser();
 }
-?>
