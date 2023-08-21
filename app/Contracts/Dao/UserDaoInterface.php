@@ -1,9 +1,6 @@
 <?php
 namespace App\Contracts\Dao;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-
 interface UserDaoInterface
 {
     public function insert(array $insertData);

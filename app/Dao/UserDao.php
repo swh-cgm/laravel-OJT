@@ -5,7 +5,6 @@ use App\Contracts\Dao\UserDaoInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
-use Illuminate\Http\Request;
 
 class UserDao implements UserDaoInterface
 {
@@ -52,14 +51,7 @@ class UserDao implements UserDaoInterface
      */
     public function update(array $updateData, int $id): void
     {
-        $user = User::find($id);
-        $user->name = $updateData['name'];
-        $user->email = $updateData['email'];
-        $user->role = $updateData['role'];
-        if ($updateData['img']) {
-            $user->img = $updateData['img'];
-        }
-        $user->save();
+        User::where('id', $id)->update($updateData);
     }
 
     /**

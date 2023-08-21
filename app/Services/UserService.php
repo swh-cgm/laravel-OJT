@@ -1,7 +1,6 @@
 <?php
 namespace App\Services;
 
-use App\Dao\UserDao;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Contracts\Dao\UserDaoInterface;
@@ -22,13 +21,11 @@ class UserService implements UserServiceInterface
      * insert user
      *
      * @param Request $request
-     * @return null
+     * @return void
      */
-    public function insert(Request $request): null
+    public function insert(Request $request): void
     {
         $encrypted = Hash::make($request->password);
-
-        // $path = $request->file('img')->store('pfp');
 
         $filename = $request->img->getClientOriginalName();
         $request->img->storeAs('UserImages', $filename, 'public');
@@ -41,8 +38,7 @@ class UserService implements UserServiceInterface
             'img' => $filename,
             'created_by' => 1
         ];
-
-        return $this->userDao->insert($insertData);
+        $this->userDao->insert($insertData);
     }
 
     /**
@@ -61,26 +57,27 @@ class UserService implements UserServiceInterface
      * Delete user
      *
      * @param int $id
-     * @return null
+     * @return void
      */
-    public function delete(int $id): null
+    public function delete(int $id): void
     {
-        return $this->userDao->delete($id);
+        $this->userDao->delete($id);
     }
 
     /**
      * update user
      *
      * @param Request $request
-     * @return null
+     * @return void
      */
-    public function update(Request $request): null
+    public function update(Request $request): void
     {
         if ($request->img) {
             $filename = $request->img->getClientOriginalName();
             $request->img->storeAs('UserImages', $filename, 'public');
-        } else {
-            $filename = null;
+        } 
+        else {
+            $filename = User::where('id', $request->id)->value('img');
         }
 
         $updateData = [
@@ -90,8 +87,7 @@ class UserService implements UserServiceInterface
             'img' => $filename,
             'created_by' => 1
         ];
-
-        return $this->userDao->update($updateData, $request->id);
+        $this->userDao->update($updateData, $request->id);
     }
 
     /**

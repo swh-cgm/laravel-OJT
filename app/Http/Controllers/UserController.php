@@ -56,7 +56,7 @@ class UserController extends Controller
             'role' => 'required'
         ]);
 
-        $data = $this->userService->insert($request);
+        $this->userService->insert($request);
         return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 
@@ -74,7 +74,6 @@ class UserController extends Controller
         } else {
             return redirect()->route('users.index')->with('failed', 'User Does Not Exist');
         }
-
     }
 
     /**
@@ -104,7 +103,7 @@ class UserController extends Controller
             'img' => 'image',
             'role' => 'required'
         ]);
-        $data = $this->userService->update($request);
+        $this->userService->update($request);
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
@@ -117,7 +116,7 @@ class UserController extends Controller
      */
     public function destroy(int $id): RedirectResponse
     {
-        $data = $this->userService->delete($id);
+        $this->userService->delete($id);
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 }
