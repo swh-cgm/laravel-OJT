@@ -26,11 +26,6 @@ class UserController extends Controller
     {
         $users = $this->userService->getAllUser();
 
-        error_log("Role".User::ADMIN_ROLE);
-        error_log("Role".User::MEMBER_ROLE);
-        error_log("Role".User::ADMIN);
-        error_log("Role".User::MEMBER);
-
         return view('users.index', ['users' => $users]);
     }
 
