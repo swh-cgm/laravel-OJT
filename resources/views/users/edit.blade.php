@@ -1,16 +1,15 @@
 @extends('layout')
 @section('content')
-
-<form enctype="multipart/form-data" action="{{ route('users.update') }}" method="POST">
-    @csrf
-
-    <div class="form-content">
-        <div class="form-title">
+<div class="content-container">
+    <form enctype="multipart/form-data" action="{{ route('users.update') }}" method="POST">
+        @csrf
+        <div class="form-ttl">
             <h3>Edit User</h3>
         </div>
         <div>
             <input name="id" name="id" id="id" type="hidden" @if ($errors->any()) value="{{old('id')}}" @else value="{{ $user->id }}" @endif>
         </div>
+
         <div>
             <label for="img">Profile Picture</label><br>
             <input type="file" name="img" id="img" accept="image/*">
@@ -46,21 +45,26 @@
         @endif
         <div>
             <label for="user-role">Admin</label>
-            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}">
+            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ $user->role == config('constants.user_role.admin_no')? 'checked': '' }}>
 
             <label for="user-role">Member</label>
-            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}">
+            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}" {{ $user->role == config('constants.user_role.member_no')? 'checked': '' }}>
         </div>
         @if ($errors->has('role'))
         <div>
             <p>{{ $errors->first('role') }}</p>
         </div>
         @endif
-        <div>
+        <div class="form-submit-btn">
             <button type="submit">Submit</button>
         </div>
+    </form>
+
+    <div>
+        <a href="{{ route('changePasswordScreen') }}">Change Password</a>
     </div>
-
-</form>
-
+    <div>
+        <a href="{{ route('users.delete', $user->id) }}" class="text-danger">Delete</a>
+    </div>
+</div>
 @endsection

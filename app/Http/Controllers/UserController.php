@@ -52,7 +52,7 @@ class UserController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:8|max:255',
             'password_confirmation' => 'required|min:8|max:255',
-            'img' => 'required|image',
+            'img' => 'image',
             'role' => 'required'
         ]);
 
@@ -104,9 +104,8 @@ class UserController extends Controller
             'role' => 'required'
         ]);
         $this->userService->update($request);
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return back()->with('success', 'User updated successfully.');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -119,4 +118,5 @@ class UserController extends Controller
         $this->userService->delete($id);
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
+
 }

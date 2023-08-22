@@ -1,10 +1,9 @@
 @extends('layout')
 @section('content')
-
-<form enctype="multipart/form-data" action="{{ route('users.store') }}" method="POST">
-    @csrf
-    <div class="form-content">
-        <div class="form-title">
+<div class="content-container">
+    <form enctype="multipart/form-data" action="{{ route('users.store') }}" method="POST">
+        @csrf
+        <div class="form-ttl">
             <h3>Add New User</h3>
         </div>
         <div>
@@ -60,21 +59,19 @@
         @endif
         <div>
             <label for="user-role">Admin</label>
-            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}">
+            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ old('role') == config('constants.user_role.admin_no')? 'checked': '' }}>
 
             <label for="user-role">Member</label>
-            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}">
+            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}" {{ old('role') == config('constants.user_role.member_no')? 'checked': '' }}>
         </div>
         @if ($errors->has('role'))
         <div>
             <p>{{ $errors->first('role') }}</p>
         </div>
         @endif
-        <div>
+        <div class="form-submit-btn">
             <button type="submit">Submit</button>
         </div>
-    </div>
-
-</form>
-
+    </form>
+</div>
 @endsection
