@@ -5,6 +5,11 @@ use App\Contracts\Dao\UserDaoInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class UserDao implements UserDaoInterface
 {
@@ -63,5 +68,41 @@ class UserDao implements UserDaoInterface
     {
         $users = DB::table('users')->oldest('updated_at')->get();
         return $users;
+    }
+
+    /**
+     * Store changed password
+     *
+     * @param Request $request
+     * @param User $auth
+     * @return void
+     */
+    public function storeChangedPassword(Request $request, User $auth): void
+    {
+        $user = User::find($auth->id);
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    }
+
+    /**
+     * Store reset password
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function storeResetPassword(Request $request): void
+    {
+        Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forcefill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
     }
 }

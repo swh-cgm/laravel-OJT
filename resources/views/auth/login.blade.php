@@ -1,19 +1,31 @@
 @extends('layout')
 @section('content')
-
-<form>
-    <div>
+<div class="content-container">
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
         <div>
-            <label for="email">Email</label><br>
-            <input type="email" name="email" id="email">
+            <div class="form-ttl">
+                <h2>Login</h2>
+            </div>
+            <div>
+                <label for="email">Email</label><br>
+                <input type="email" name="email" id="email">
+            </div>
+            <div>
+                <label for="password">Password</label><br>
+                <input type="password" name="password" id="password">
+            </div>
+            <div class="form-submit-btn">
+                <button type="submit">Login</button>
+                <a href="{{ route('password.request') }}">Forgot Password</a>
+            </div>
         </div>
-        
-        <div>
-            <label for="password">Password</label><br>
-            <input type="password" name="password" id="password">
-        </div>
-    </div>
+    </form>
 
-</form>
-
+    @if(count($errors)>0)
+    @foreach ($errors->all() as $error)
+    <p>{{ $error }}</p>
+    @endforeach
+    @endif
+</div>
 @endsection

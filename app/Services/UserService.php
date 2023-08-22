@@ -27,8 +27,12 @@ class UserService implements UserServiceInterface
     {
         $encrypted = Hash::make($request->password);
 
-        $filename = $request->img->getClientOriginalName();
-        $request->img->storeAs('UserImages', $filename, 'public');
+        if ($request->img) {
+            $filename = $request->img->getClientOriginalName();
+            $request->img->storeAs('UserImages', $filename, 'public');
+        } else {
+            $filename = "default.png";
+        }
 
         $insertData = [
             'name' => $request->name,
@@ -75,8 +79,7 @@ class UserService implements UserServiceInterface
         if ($request->img) {
             $filename = $request->img->getClientOriginalName();
             $request->img->storeAs('UserImages', $filename, 'public');
-        } 
-        else {
+        } else {
             $filename = User::where('id', $request->id)->value('img');
         }
 
