@@ -63,29 +63,23 @@ class UserController extends Controller
     /**
      * show user detail
      *
-     * @param integer $id
+     * @param User $user
      * @return mixed
      */
-    public function show(int $id): mixed
+    public function show(User $user): view
     {
-        $data = $this->userService->getUserById($id);
-        if ($data != null) {
-            return view('users.detail', ['user' => $data]);
-        } else {
-            return redirect()->route('users.index')->with('failed', 'User Does Not Exist');
-        }
+        return view('users.detail', ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param integer $id
+     * @param User $user
      * @return View
      */
-    public function edit(int $id): View
+    public function edit(User $user): View
     {
-        $data = $this->userService->getUserById($id);
-        return view('users.edit', ['user' => $data]);
+        return view('users.edit', ['user' => $user]);
     }
 
     /**
@@ -108,14 +102,14 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete user
      *
-     * @param integer $id
+     * @param User $user
      * @return RedirectResponse
      */
-    public function destroy(int $id): RedirectResponse
+    public function destroy(User $user): RedirectResponse
     {
-        $this->userService->delete($id);
+        $this->userService->delete($user);
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 

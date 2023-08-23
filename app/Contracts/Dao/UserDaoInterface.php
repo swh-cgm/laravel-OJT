@@ -10,7 +10,7 @@ interface UserDaoInterface
 
     public function getUserById(int $id);
 
-    public function delete(int $id);
+    public function delete(User $user);
 
     public function update(array $updateData, int $id);
 

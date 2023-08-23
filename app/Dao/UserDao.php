@@ -39,12 +39,12 @@ class UserDao implements UserDaoInterface
     /**
      * Delete User
      *
-     * @param int $id
+     * @param User $user
      * @return void
      */
-    public function delete(int $id): void
+    public function delete(User $user): void
     {
-        User::whereId($id)->delete();
+        $user->delete();
     }
 
     /**

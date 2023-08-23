@@ -11,7 +11,7 @@
         </div>
         <div>
             <label for="email">Email</label><br>
-            <input type="email" name="email" id="email" placeholder="Email">
+            <input type="email" name="email" id="email" value="{{ old('email') }}">
         </div>
         <div>
             <label for="password">Password</label><br>

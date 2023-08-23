@@ -2,6 +2,7 @@
 namespace App\Contracts\Services;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 interface UserServiceInterface
 {
@@ -9,7 +10,7 @@ interface UserServiceInterface
 
     public function getUserById(int $id);
 
-    public function delete(int $id);
+    public function delete(User $user);
 
     public function update(Request $request);
 
