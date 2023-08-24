@@ -10,6 +10,13 @@
         <p>{{ $message }}</p>
     </div>
     @endif
+    @if($errors->any())
+        @foreach($errors as $error)
+            <div class="alert alert-danger">
+                <p>{{ $error }}</p>
+            </div>
+        @endforeach
+    @endif
     <div>
         <a href="{{ route('users.create') }}" alt="create user">Create User</a>
     </div>

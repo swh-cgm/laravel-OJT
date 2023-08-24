@@ -12,7 +12,8 @@ class AuthService implements AuthServiceInterface
 {
     protected $userDao;
 
-    public function __construct(UserDaoInterface $userDao){
+    public function __construct(UserDaoInterface $userDao)
+    {
         $this->userDao = $userDao;
     }
     /**

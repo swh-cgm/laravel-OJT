@@ -5,11 +5,11 @@
         @csrf
         <div>
             <div class="form-ttl">
-                <h2>Login</h2>
+                <h3>Login</h3>
             </div>
             <div>
                 <label for="email">Email</label><br>
-                <input type="email" name="email" id="email">
+                <input type="email" name="email" id="email" value="{{ old('email') }}">
             </div>
             <div>
                 <label for="password">Password</label><br>

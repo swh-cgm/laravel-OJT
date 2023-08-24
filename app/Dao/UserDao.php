@@ -32,7 +32,7 @@ class UserDao implements UserDaoInterface
      */
     public function getUserById(int $id): User
     {
-        $data = User::find($id);
+        $data = User::where('id', $id)->first();
         return $data;
     }
 
@@ -44,7 +44,7 @@ class UserDao implements UserDaoInterface
      */
     public function delete(int $id): void
     {
-        User::whereId($id)->delete();
+        User::where('id', $id)->delete();
     }
 
     /**
@@ -79,7 +79,7 @@ class UserDao implements UserDaoInterface
      */
     public function storeChangedPassword(Request $request, User $auth): void
     {
-        $user = User::find($auth->id);
+        $user = User::where('id', $auth->id)->first();
         $user->password = Hash::make($request->new_password);
         $user->save();
     }

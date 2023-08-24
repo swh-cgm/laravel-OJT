@@ -8,7 +8,7 @@
         </div>
         <div>
             <label for="email">Email</label><br>
-            <input type="email" id="email" name="email" placeholder="email">
+            <input type="email" name="email" id="email" value="{{ old('email') }}">
         </div>
         <div class="form-submit-btn">
             <button type="submit">Submit</button>
@@ -16,13 +16,13 @@
     </form>
 
     @if(count($errors)>0)
-    @foreach ($errors->all() as $error)
-    <p>{{ $error }}</p>
-    @endforeach
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
     @endif
 
     @if(Session::has('status'))
-    <p>{{Session::get('status')}}</p>
+        <p>{{Session::get('status')}}</p>
     @endif
 </div>
 @endsection

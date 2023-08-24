@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,13 @@ Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('
 Route::post('forgot-password', [AuthController::class, 'forgotPasswordEmail'])->name('password.email');
 Route::get('reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'resetPasswordStore'])->name('password.update');
+
+Route::get('posts/index', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('posts/create', [PostController::class, 'store'])->name('posts.store');
+
+Route::get('posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
+Route::post('posts/edit', [PostController::class, 'update'])->name('posts.update');
+
+Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.delete');

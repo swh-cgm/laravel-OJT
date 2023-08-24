@@ -12,7 +12,8 @@
 
 <body>
     <div class="header container">
-        <div><a href="{{ route('users.index') }}" rel="home" class="header-nav-home">Home</a></div>
+        <span><a href="{{ route('posts.index') }}" rel="home" class="header-nav-home">Home</a></span>
+        <span><a href="{{ route('users.index') }}" rel="home" class="header-nav-home">Users</a></span>
     </div>
     <div class="container content">
         @yield('content')
