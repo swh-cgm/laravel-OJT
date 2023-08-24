@@ -6,6 +6,7 @@ use App\Contracts\Services\PostServiceInterface;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 
 class PostService implements PostServiceInterface
@@ -41,7 +42,12 @@ class PostService implements PostServiceInterface
      */
     public function getAllPost(): collection
     {
-        return $this->postDao->getAllPost();
+        if (Auth::check()) {
+            $posts = $this->postDao->getAllPost();
+        } else {
+            $posts = $this->postDao->getPublicPost();
+        }
+        return $posts;
     }
 
     /**
@@ -84,10 +90,5 @@ class PostService implements PostServiceInterface
     public function delete(int $id): void
     {
         $this->postDao->delete($id);
-    }
-
-    public function getPublicPost(): Collection
-    {
-        return $this->postDao->getPublicPost();
     }
 }

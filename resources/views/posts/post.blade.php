@@ -7,7 +7,7 @@
         <p class="alert alert-warning">{{ $error }}</p>
         @endforeach
     @endif
-    @if($postOwner)
+    @if($post->can_edit)
     <div>
         <a href="{{ route('posts.edit', [$post->id]) }}" rel="edit post">Edit</a><br>
         <a href="{{ route('posts.delete', [$post->id]) }}" rel="delete post">Delete</a>

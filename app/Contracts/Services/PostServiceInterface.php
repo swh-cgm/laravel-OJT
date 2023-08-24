@@ -10,8 +10,6 @@ interface PostServiceInterface
 
     public function getAllPost();
 
-    public function getPublicPost();
-
     public function getPostById(int $id);
 
     public function update(UpdatePostRequest $request);

@@ -28,10 +28,10 @@ class PostDao implements PostDaoInterface
     public function getAllPost(): Collection
     {
         $data = DB::table('posts')
-            ->join('users', 'posts.created_by', '=', 'users.id')
-            ->select('*', 'posts.id as id')
-            ->orderBy('posts.updated_at', 'DESC')
-            ->get();
+                    ->join('users', 'posts.created_by', '=', 'users.id')
+                    ->select('*', 'posts.id as id')
+                    ->orderBy('posts.updated_at', 'DESC')
+                    ->get();
 
         return $data;
     }
@@ -44,14 +44,14 @@ class PostDao implements PostDaoInterface
      */
     public function getPostById(int $post_id): Post
     {
-        return Post::find($post_id);
+        return Post::where('id',$post_id)->first();
     }
 
     /**
      * Update post in database
      *
      * @param array $updateData
-     * @param integer $post_id
+    * @param integer $post_id
      * @return void
      */
     public function update(array $updateData, int $post_id): void
@@ -67,17 +67,17 @@ class PostDao implements PostDaoInterface
      */
     public function delete(int $id): void
     {
-        Post::find($id)->delete();
+        Post::where('id',$id)->delete();
     }
 
     public function getPublicPost(): collection
     {
         $data = DB::table('posts')
-        ->join('users', 'posts.created_by', '=', 'users.id')
-        ->select('*', 'posts.id as id')
-        ->where('public_flag', true)
-        ->orderBy('posts.updated_at', 'DESC')
-        ->get();
+                    ->join('users', 'posts.created_by', '=', 'users.id')
+                    ->select('*', 'posts.id as id')
+                    ->where('public_flag', true)
+                    ->orderBy('posts.updated_at', 'DESC')
+                    ->get();
 
         return $data;
     }

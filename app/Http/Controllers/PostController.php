@@ -29,14 +29,9 @@ class PostController extends Controller
      */
     public function index(): View
     {
-        if(Auth::check()){
-            $posts = $this->postService->getAllPost();
-        }
-        else{
-            $posts = $this->postService->getPublicPost();
-        }
-        return view('posts.index', ['posts' => $posts]);
+        $posts = $this->postService->getAllPost();
 
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -76,13 +71,8 @@ class PostController extends Controller
     {
         $post = $this->postService->getPostById($id);
         $originalPoster = $this->userService->getUserById($post->created_by);
-        $postOwner = false;
-        if(Auth::check()){
-            $auth_user = Auth::user()->id;
-            $postOwner = $auth_user==$post->created_by? true: false;
-        }
 
-        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster, 'postOwner'=>$postOwner]);
+        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster]);
     }
 
     /**
