@@ -3,7 +3,6 @@ namespace App\Contracts\Services;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Models\Post;
 
 interface PostServiceInterface
 {
@@ -11,9 +10,11 @@ interface PostServiceInterface
 
     public function getAllPost();
 
+    public function getPublicPost();
+
     public function getPostById(int $id);
 
     public function update(UpdatePostRequest $request);
 
-    public function delete(Post $post);
+    public function delete(int $id);
 }

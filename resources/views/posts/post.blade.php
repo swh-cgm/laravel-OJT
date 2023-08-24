@@ -3,15 +3,17 @@
 @section('content')
 <div class="content-container">
     @if(count($errors)>0)
-    @foreach ($errors->all() as $error)
-    <p class="alert alert-warning">{{ $error }}</p>
-    @endforeach
+        @foreach ($errors->all() as $error)
+        <p class="alert alert-warning">{{ $error }}</p>
+        @endforeach
     @endif
+    @if($postOwner)
     <div>
         <a href="{{ route('posts.edit', [$post->id]) }}" rel="edit post">Edit</a><br>
         <a href="{{ route('posts.delete', [$post->id]) }}" rel="delete post">Delete</a>
     </div>
     <br>
+    @endif
     <div>
         <h5>User Name</h5>
         <h6>{{ $originalPoster->name }}</h6>

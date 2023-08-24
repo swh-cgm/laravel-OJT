@@ -29,8 +29,14 @@ class PostController extends Controller
      */
     public function index(): View
     {
-        $posts = $this->postService->getAllPost();
+        if(Auth::check()){
+            $posts = $this->postService->getAllPost();
+        }
+        else{
+            $posts = $this->postService->getPublicPost();
+        }
         return view('posts.index', ['posts' => $posts]);
+
     }
 
     /**
@@ -63,28 +69,40 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Post $post
+     * @param int $id
      * @return View
      */
-    public function show(Post $post): View
+    public function show(int $id): View
     {
+        $post = $this->postService->getPostById($id);
         $originalPoster = $this->userService->getUserById($post->created_by);
-        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster]);
+        $postOwner = false;
+        if(Auth::check()){
+            $auth_user = Auth::user()->id;
+            $postOwner = $auth_user==$post->created_by? true: false;
+        }
+
+        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster, 'postOwner'=>$postOwner]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Post $post
+     * @param int $id
      * @return mixed
      */
-    public function edit(Post $post): mixed
+    public function edit(int $id): mixed
     {
-
         if (Auth::check()) {
-            return view('posts.edit', ['post' => $post, 'updated_by' => Auth::user()->id]);
+            $post = $this->postService->getPostById($id);
+            if ($post->created_by == Auth::user()->id) {
+                
+                return view('posts.edit', ['post' => $post, 'updated_by' => Auth::user()->id]);
+            } else {
+                return redirect()->route('posts.index')->with('error', 'You can only edit your own posts.');
+            }
         } else {
-            return back()->withErrors('Must be logged in to edit a post.');
+            return redirect()->route('posts.index')->with('error', 'Must be logged in to edit a post.');
         }
     }
 
@@ -104,16 +122,21 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Post $post
-     * @return RedirectResponse
+     * @param int $id
+     * @return mixed
      */
-    public function destroy(Post $post): RedirectResponse
+    public function destroy(int $id): mixed
     {
         if (Auth::check()) {
-            $this->postService->delete($post);
-            return redirect()->route('posts.index');
+            $post = $this->postService->getPostById($id);
+            if ($post->created_by == Auth::user()->id) {
+                $this->postService->delete($id);
+                return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+            } else {
+                return redirect()->route('posts.index')->with('error', 'You can only delete your own posts.');
+            }
         } else {
-            return back()->withErrors('Must be logged in to delete a post.');
+            return redirect()->route('posts.index')->with('error', 'Must be logged in to delete a post.');
         }
     }
 }

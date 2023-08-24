@@ -60,12 +60,12 @@ class UserService implements UserServiceInterface
     /**
      * Delete user
      *
-     * @param User $user
+     * @param int $id
      * @return void
      */
-    public function delete(User $user): void
+    public function delete(int $id): void
     {
-        $this->userDao->delete($user);
+        $this->userDao->delete($id);
     }
 
     /**

@@ -22,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('posts', function(Blueprint $table){
+            $table->foreign('created_by')->references('id')->on('users')->change();
+            $table->foreign('updated_by')->references('id')->on('users')->change();
+        });
     }
 };

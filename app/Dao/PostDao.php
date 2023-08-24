@@ -27,7 +27,13 @@ class PostDao implements PostDaoInterface
      */
     public function getAllPost(): Collection
     {
-        return DB::table("posts")->oldest('updated_at')->get();
+        $data = DB::table('posts')
+            ->join('users', 'posts.created_by', '=', 'users.id')
+            ->select('*', 'posts.id as id')
+            ->orderBy('posts.updated_at', 'DESC')
+            ->get();
+
+        return $data;
     }
 
     /**
@@ -56,11 +62,23 @@ class PostDao implements PostDaoInterface
     /**
      * Delete post
      *
-     * @param Post $post
+     * @param int $id
      * @return void
      */
-    public function delete(Post $post): void
+    public function delete(int $id): void
     {
-        $post->delete();
+        Post::find($id)->delete();
+    }
+
+    public function getPublicPost(): collection
+    {
+        $data = DB::table('posts')
+        ->join('users', 'posts.created_by', '=', 'users.id')
+        ->select('*', 'posts.id as id')
+        ->where('public_flag', true)
+        ->orderBy('posts.updated_at', 'DESC')
+        ->get();
+
+        return $data;
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -25,7 +27,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = $this->userService->getAllUser();
-
+        
         return view('users.index', ['users' => $users]);
     }
 
@@ -63,23 +65,38 @@ class UserController extends Controller
     /**
      * show user detail
      *
-     * @param User $user
+     * @param int $id
      * @return mixed
      */
-    public function show(User $user): view
+    public function show(int $id): mixed
     {
-        return view('users.detail', ['user' => $user]);
+        $data = $this->userService->getUserById($id);
+        if ($data != null) {
+            return view('users.detail', ['user' => $data]);
+        } else {
+            return redirect()->route('users.index')->with('failed', 'User Does Not Exist');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param User $user
-     * @return View
+     * @param int $id
+     * @return mixed
      */
-    public function edit(User $user): View
+    public function edit(int $id): mixed
     {
-        return view('users.edit', ['user' => $user]);
+        if (Auth::check()) {
+            $auth_id = Auth::user()->id;
+            if ($auth_id == $id) {
+                $data = $this->userService->getUserById($id);
+                return view('users.edit', ['user' => $data]);
+            } else {
+                return redirect()->route('users.index')->with('failed', 'You can only edit your own profile.');
+            }
+        } else {
+            return redirect()->route('users.index')->with('failed', 'Please log in.');
+        }
     }
 
     /**
@@ -104,13 +121,21 @@ class UserController extends Controller
     /**
      * Delete user
      *
-     * @param User $user
-     * @return RedirectResponse
+     * @param int $id
+     * @return mixed
      */
-    public function destroy(User $user): RedirectResponse
+    public function destroy(int $id): mixed
     {
-        $this->userService->delete($user);
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        if (Auth::check()) {
+            $auth_id = Auth::user()->id;
+            if ($auth_id == $id) {
+                $this->userService->delete($id);
+                return redirect()->route('users.index')->with('success', 'User deleted successfully');
+            } else {
+                return redirect()->route('users.index')->with('failed', 'You can only delete your own profile.');
+            }
+        } else {
+            return redirect()->route('users.index')->with('failed', 'Please log in.');
+        }
     }
-
 }

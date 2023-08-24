@@ -78,11 +78,16 @@ class PostService implements PostServiceInterface
     /**
      * Delete post
      *
-     * @param Post $post
+     * @param int $id
      * @return void
      */
-    public function delete(Post $post): void
+    public function delete(int $id): void
     {
-        $this->postDao->delete($post);
+        $this->postDao->delete($id);
+    }
+
+    public function getPublicPost(): Collection
+    {
+        return $this->postDao->getPublicPost();
     }
 }
