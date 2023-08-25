@@ -6,10 +6,12 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements CanResetPassword
 {
     use Notifiable;
+    use HasFactory;
     protected $fillable = [
         'email',
         'password',
@@ -19,6 +21,9 @@ class User extends Authenticatable implements CanResetPassword
         'created_by',
         'updated_by'
     ];
-
-    use HasFactory;
+    
+    public function getCanEditAttribute(): bool
+    {
+        return Auth::check() ? (Auth::user()->role==1) : false;
+    }
 }

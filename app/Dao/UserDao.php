@@ -77,10 +77,13 @@ class UserDao implements UserDaoInterface
      * @param User $auth
      * @return void
      */
-    public function storeChangedPassword(Request $request, User $auth): void
+    public function storeChangedPassword(string $password, int $id): void
     {
-        $user = User::where('id', $auth->id)->first();
-        $user->password = Hash::make($request->new_password);
+        error_log('userdao pwd' . $password);
+        error_log('userid' . $id);
+        $user = User::where('id', $id)->first();
+
+        $user->password = Hash::make($password);
         $user->save();
     }
 
@@ -104,5 +107,15 @@ class UserDao implements UserDaoInterface
                 event(new PasswordReset($user));
             }
         );
+    }
+    /**
+     *Check if user is in table
+     *
+     * @param Request $request
+     * @return boolean
+     */
+    public function verifyUserExists(Request $request): bool
+    {
+        return User::findOrFail($request->id) ? true : false;
     }
 }

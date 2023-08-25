@@ -38,7 +38,7 @@ class UserService implements UserServiceInterface
             'name' => $request->name,
             'email' => $request->email,
             'password' => $encrypted,
-            'role' => $request->role,
+            'role' => $request->has('role')? $request->role : '2',
             'img' => $filename,
             'created_by' => 1
         ];
@@ -86,7 +86,7 @@ class UserService implements UserServiceInterface
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role' => $request->has('role')? $request->role : '2',
             'img' => $filename,
             'created_by' => 1
         ];
@@ -101,5 +101,10 @@ class UserService implements UserServiceInterface
     public function getAllUser(): Collection
     {
         return $this->userDao->getAllUser();
+    }
+
+    public function verifyUserExists(Request $request): bool
+    {
+        return $this->userDao->verifyUserExists($request);
     }
 }

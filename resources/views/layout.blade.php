@@ -12,8 +12,29 @@
 
 <body>
     <div class="header container">
-        <span><a href="{{ route('posts.index') }}" rel="home" class="header-nav-home">Home</a></span>
-        <span><a href="{{ route('users.index') }}" rel="home" class="header-nav-home">Users</a></span>
+        <span>
+            <span><a href="{{ route('posts.index') }}" rel="home" class="header-nav-home">Home</a></span>
+            @if(Auth::check())
+            <span><a href="{{ route('users.index') }}" rel="users" class="header-nav-home">Users</a></span>
+            <span><a href="{{ route('posts.create') }}" rel="create" class="header-nav-home">Create</a></span>
+            @endif
+        </span>
+        <span>
+            @if(Auth::check())
+            @if(Route::currentRouteName()!='users.create' || Auth::user()->role != 2)
+                <span><a href="{{route('users.edit', Auth::user()->id)}}" rel="user-profile">@if(Auth::user()->role==1) Admin: @endif{{Auth::user()->name}}</a></span> 
+                <span><a href="{{ route('logout') }}">Logout</a></span>       
+
+            @endif
+            @else
+                @if(Route::currentRouteName()!='loginScreen')
+                    <span><a href=" {{route('loginScreen')}} ">Login</a></span>
+                @endif
+                @if(Route::currentRouteName()!='users.create')
+                    <span><a href=" {{route('users.create')}} ">Register</a></span>
+                @endif
+            @endif
+        </span>
     </div>
     <div class="container content">
         @yield('content')
