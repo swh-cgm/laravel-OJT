@@ -45,7 +45,7 @@ class AdminService implements AdminServiceInterface
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->has('role') ? $request->role : '2',
+            'role' => $request->has('role') ? $request->role : config('constants.user_role.member_no'),
             'img' => $filename,
             'created_by' => 1
         ];

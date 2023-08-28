@@ -30,4 +30,14 @@ class User extends Authenticatable implements CanResetPassword
     {
         return Auth::check() ? (Auth::user()->role == config('constants.user_role.admin_no')) : false;
     }
+    
+    /**
+     * Check if the current user is Admin.
+     *
+     * @return boolean
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role == config('constants.user_role.admin_no');
+    }
 }
