@@ -28,6 +28,6 @@ class User extends Authenticatable implements CanResetPassword
      */
     public function getCanEditAttribute(): bool
     {
-        return Auth::check() ? (Auth::user()->role == 1) : false;
+        return Auth::check() ? (Auth::user()->role == config('constants.user_role.admin_no')) : false;
     }
 }
