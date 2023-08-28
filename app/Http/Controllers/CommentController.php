@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\CommentServiceInterface;
+use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    protected $commentService;
+
+    public function __construct(CommentServiceInterface $commentService){
+        $this->commentService = $commentService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,9 +33,12 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request)
     {
-        //
+        error_log('Post id'.$request->post_id);
+        error_log('User id'.$request->user_id);
+        $this->commentService->insert($request);
+        return back();
     }
 
     /**

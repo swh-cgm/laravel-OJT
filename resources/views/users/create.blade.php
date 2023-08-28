@@ -62,7 +62,8 @@
             <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ old('role') == config('constants.user_role.admin_no')? 'checked': '' }}>
 
             <label for="user-role">Member</label>
-            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}" {{ old('role') == config('constants.user_role.member_no')? 'checked': '' }}>
+            <input type="radio" name="role" id="user-r
+            ole" value="{{config('constants.user_role.member_no')}}" {{ old('role') == config('constants.user_role.member_no')? 'checked': '' }}>
         </div>
         @if ($errors->has('role'))
         <div>

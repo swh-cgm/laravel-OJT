@@ -26,5 +26,23 @@
         <h6>Description</h6>
         <p>{{ $post->description }}</p>
     </div>
+    <div>
+        <form @if (Auth::check()) action="{{ route('posts.comment.store', ['post_id'=>$post->id, 'user_id'=>Auth::user()->id]) }}"  method="POST" @endif>
+            @csrf
+            <div>
+              <textarea placeholder="Comment" id="user_comment" name="user_comment" rows="2"></textarea>
+              @if($errors->has('user_comment'))
+                <div>
+                    <p>
+                        {{ $errors->first('user_comment') }}
+                    </p>
+                </div>
+              @endif
+            </div>
+            <div>
+                <button type="submit">Comment</button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection
