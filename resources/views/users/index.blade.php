@@ -1,4 +1,5 @@
 @extends('layout')
+
 @section('content')
 <div class="content-container">
     @if($message = Session::get('success'))
@@ -10,11 +11,9 @@
         <p>{{ $message }}</p>
     </div>
     @endif
-    @if($errors->any())
-        @foreach($errors as $error)
-            <div class="alert alert-danger">
-                <p>{{ $error }}</p>
-            </div>
+    @if(count($errors)>0)
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-warning">{{ $error }}</p>
         @endforeach
     @endif
     <div>
@@ -34,7 +33,7 @@
             <td>{{ $user->email }}</td>
             <td>{{ $user->name }}</td>
             <td><a href="{{ route('users.detail', $user->id) }}" rel="User Detail">User Details</td>
-            <td><a href="{{ route('loginScreen') }}" rel="Edit User">Edit User</td>
+            <td><a href="{{ route('users.edit', $user->id) }}" rel="Edit User">Edit User</td>
         </tr>
         @endforeach
     </table>

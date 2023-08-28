@@ -23,9 +23,9 @@ class AuthService implements AuthServiceInterface
      * @param User $auth
      * @return void
      */
-    public function storeChangedPassword(Request $request, User $auth): void
+    public function storeChangedPassword(string $password, int $id): void
     {
-        $this->userDao->storeChangedPassword($request, $auth);
+        $this->userDao->storeChangedPassword($password, $id);
     }
 
     /**

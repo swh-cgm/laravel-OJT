@@ -5,6 +5,7 @@ use App\Contracts\Dao\PostDaoInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PostDao implements PostDaoInterface
 {
@@ -44,14 +45,14 @@ class PostDao implements PostDaoInterface
      */
     public function getPostById(int $post_id): Post
     {
-        return Post::where('id',$post_id)->first();
+        return Post::where('id', $post_id)->first();
     }
 
     /**
      * Update post in database
      *
      * @param array $updateData
-    * @param integer $post_id
+     * @param integer $post_id
      * @return void
      */
     public function update(array $updateData, int $post_id): void
@@ -67,9 +68,14 @@ class PostDao implements PostDaoInterface
      */
     public function delete(int $id): void
     {
-        Post::where('id',$id)->delete();
+        Post::where('id', $id)->delete();
     }
 
+    /**
+     * get public posts
+     *
+     * @return collection
+     */
     public function getPublicPost(): collection
     {
         $data = DB::table('posts')
@@ -80,5 +86,15 @@ class PostDao implements PostDaoInterface
                     ->get();
 
         return $data;
+    }
+    /**
+     * Check if post exists
+     *
+     * @param Request $request
+     * @return boolean
+     */
+    public function verifyPostExists(Request $request): bool
+    {
+        return Post::findOrFail($request->id) ? true : false;
     }
 }

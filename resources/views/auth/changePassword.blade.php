@@ -6,6 +6,7 @@
         <div class="form-ttl">
             <h3>Change Password</h3>
         </div>
+        <div><input type="hidden" value="{{$user->id}}"></div>
         <div>
             <label for="current_password">Current Password</label><br>
             <input type="password" id="current_password" name="current_password" placeholder="Current Password">
@@ -25,7 +26,7 @@
         </div>
         @endif
         <div>
-            <label for="old_password">Old Password</label><br>
+            <label for="old_password">Confirm New Password</label><br>
             <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="Confirm New Password">
         </div>
         @if ($errors->has('new_password_confirmation'))

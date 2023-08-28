@@ -18,6 +18,14 @@ td {
 
 .header {
   height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header span{
+  margin: 0px 10px;
 }
 
 .header-nav-home {

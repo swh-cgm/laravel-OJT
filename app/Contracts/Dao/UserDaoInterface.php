@@ -2,7 +2,6 @@
 namespace App\Contracts\Dao;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 
 interface UserDaoInterface
 {
@@ -16,7 +15,9 @@ interface UserDaoInterface
 
     public function getAllUser();
 
-    public function storeChangedPassword(Request $request, User $auth);
+    public function storeChangedPassword(string $password, int $id);
 
     public function storeResetPassword(Request $request);
+
+    public function verifyUserExists(Request $request);
 }
