@@ -3,6 +3,7 @@ namespace App\Contracts\Services;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Http\Request;
 
 interface PostServiceInterface
 {
@@ -15,4 +16,6 @@ interface PostServiceInterface
     public function update(UpdatePostRequest $request);
 
     public function delete(int $id);
+
+    public function verifyPostExists(Request $request);
 }

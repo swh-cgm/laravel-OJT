@@ -9,7 +9,6 @@ use App\Contracts\Services\UserServiceInterface;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
-
 class UserController extends Controller
 {
     protected $userService;
@@ -27,7 +26,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = $this->userService->getAllUser();
-        
+
         return view('users.index', ['users' => $users]);
     }
 
@@ -49,14 +48,27 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:8|max:255',
-            'password_confirmation' => 'required|min:8|max:255',
-            'img' => 'image',
-            'role' => 'required'
-        ]);
+        if (Auth::check()) {
+            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+                $request->validate([
+                    'name' => 'required|max:255',
+                    'email' => 'required|email|max:255|unique:users',
+                    'password' => 'required|confirmed|min:8|max:255',
+                    'password_confirmation' => 'required|min:8|max:255',
+                    'img' => 'image',
+                    'role' => 'required'
+                ]);
+            }
+        } else {
+
+            $request->validate([
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|confirmed|min:8|max:255',
+                'password_confirmation' => 'required|min:8|max:255',
+                'img' => 'image',
+            ]);
+        }
 
         $this->userService->insert($request);
         return redirect()->route('users.index')->with('success', 'User Created Successfully');
@@ -82,21 +94,12 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return mixed
+     * @return View
      */
-    public function edit(int $id): mixed
+    public function edit(int $id): View
     {
-        if (Auth::check()) {
-            $auth_id = Auth::user()->id;
-            if ($auth_id == $id) {
-                $data = $this->userService->getUserById($id);
-                return view('users.edit', ['user' => $data]);
-            } else {
-                return redirect()->route('users.index')->with('failed', 'You can only edit your own profile.');
-            }
-        } else {
-            return redirect()->route('users.index')->with('failed', 'Please log in.');
-        }
+        $data = $this->userService->getUserById($id);
+        return view('users.edit', ['user' => $data]);
     }
 
     /**
@@ -108,12 +111,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'img' => 'image',
-            'role' => 'required'
-        ]);
+        if (Auth::check()) {
+            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+                $request->validate([
+                    'name' => 'required|max:255',
+                    'email' => 'required|email|max:255',
+                    'img' => 'image',
+                    'role' => 'required'
+                ]);
+            }
+        } else {
+            $request->validate([
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255',
+                'img' => 'image',
+            ]);
+        }
         $this->userService->update($request);
         return back()->with('success', 'User updated successfully.');
     }
@@ -126,16 +139,7 @@ class UserController extends Controller
      */
     public function destroy(int $id): mixed
     {
-        if (Auth::check()) {
-            $auth_id = Auth::user()->id;
-            if ($auth_id == $id) {
-                $this->userService->delete($id);
-                return redirect()->route('users.index')->with('success', 'User deleted successfully');
-            } else {
-                return redirect()->route('users.index')->with('failed', 'You can only delete your own profile.');
-            }
-        } else {
-            return redirect()->route('users.index')->with('failed', 'Please log in.');
-        }
+        $this->userService->delete($id);
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 }

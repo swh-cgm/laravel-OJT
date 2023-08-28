@@ -14,4 +14,6 @@ interface UserServiceInterface
     public function update(Request $request);
 
     public function getAllUser();
+
+    public function verifyUserExists(Request $request);
 }

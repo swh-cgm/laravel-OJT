@@ -22,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
         //Auth
         $this->app->bind('App\Contracts\Services\AuthServiceInterface', 'App\Services\AuthService');
 
+        //Admin
+        $this->app->bind('App\Contracts\Services\AdminServiceInterface', 'App\Services\AdminService');
+
         //Comment
         $this->app->bind('App\Contracts\Services\CommentServiceInterface', 'App\Services\CommentService');
         $this->app->bind('App\Contracts\Dao\CommentDaoInterface', 'App\Dao\CommentDao');

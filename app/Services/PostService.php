@@ -5,6 +5,7 @@ use App\Contracts\Dao\PostDaoInterface;
 use App\Contracts\Services\PostServiceInterface;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
@@ -90,5 +91,10 @@ class PostService implements PostServiceInterface
     public function delete(int $id): void
     {
         $this->postDao->delete($id);
+    }
+
+    public function verifyPostExists(Request $request): bool
+    {
+        return $this->postDao->verifyPostExists($request);
     }
 }

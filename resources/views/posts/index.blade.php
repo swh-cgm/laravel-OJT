@@ -7,6 +7,11 @@
     @elseif(Session::has('success'))
         <div class="alet alert-success">{{ Session::get('success') }}</div>
     @endif
+    @if(count($errors)>0)
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-warning">{{ $error }}</p>
+        @endforeach
+    @endif
 
     @foreach($posts as $post)
     <div class="post-container">

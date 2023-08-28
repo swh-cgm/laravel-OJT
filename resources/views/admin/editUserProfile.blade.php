@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 <div class="content-container">
-    <form enctype="multipart/form-data" action="{{ route('users.update') }}" method="POST">
+    <form enctype="multipart/form-data" action="{{ route('admin.edit.users.update') }}" method="POST">
         @csrf
         @if(count($errors)>0)
             @foreach ($errors->all() as $error)
@@ -48,7 +48,6 @@
             <p>{{ $message }}</p>
         </div>
         @endif
-        @if($user->can_edit)
         <div>
             <label for="user-role">Admin</label>
             <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ $user->role == config('constants.user_role.admin_no')? 'checked': '' }}>
@@ -61,15 +60,30 @@
             <p>{{ $errors->first('role') }}</p>
         </div>
         @endif
+        <div>
+            <label for="new_password">New Password</label><br>
+            <input type="password" id="new_password" name="new_password" placeholder="New Password">
+        </div>
+        @if ($errors->has('new_password'))
+        <div>
+            <p>{{ $errors->first('new_password') }}</p>
+        </div>
         @endif
+        <div>
+            <label for="old_password">Confirm New Password</label><br>
+            <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="Confirm New Password">
+        </div>
+        @if ($errors->has('new_password_confirmation'))
+        <div>
+            <p>{{ $errors->first('new_password_confirmation') }}</p>
+        </div>
+        @endif
+
         <div class="form-submit-btn">
             <button type="submit">Submit</button>
         </div>
     </form>
 
-    <div>
-        <a href="{{ route('changePasswordScreen', $user->id) }}">Change Password</a>
-    </div>
     <div>
         <a href="{{ route('users.delete', $user->id) }}" class="text-danger">Delete</a>
     </div>

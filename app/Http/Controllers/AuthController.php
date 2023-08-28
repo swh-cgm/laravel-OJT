@@ -3,20 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\AuthServiceInterface;
+use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
     protected $authService;
+    protected $userService;
 
-    public function __construct(AuthServiceInterface $authService)
+    public function __construct(AuthServiceInterface $authService, UserServiceInterface $userService)
     {
         $this->authService = $authService;
+        $this->userService = $userService;
     }
 
     /**
@@ -62,9 +66,10 @@ class AuthController extends Controller
      *
      * @return View
      */
-    public function changePassword(): View
+    public function changePassword($id): View
     {
-        return view('auth.changePassword');
+        $user = $this->userService->getUserById($id);
+        return view('auth.changePassword', ['user' => $user]);
     }
 
     /**
@@ -88,7 +93,7 @@ class AuthController extends Controller
                 if (Hash::check($request->new_password, $auth->password)) {
                     return back()->withErrors("New password cannot be the same with as your current password");
                 }
-                $this->authService->storeChangedPassword($request, $auth);
+                $this->authService->storeChangedPassword($request->new_password, $auth->id);
                 return redirect()->route('users.edit', $auth->id);
             } elseif (!Hash::check($request->current_password, $auth->password)) {
                 return back()->withErrors("Current password is incorrect.");
@@ -156,5 +161,18 @@ class AuthController extends Controller
 
         $this->authService->storeResetPassword($request);
         return redirect()->route('users.index')->with(['success' => 'Password reset successful.']);
+    }
+
+    /**
+     * Logout
+     *
+     * @return void
+     */
+    public function logout()
+    {
+        Session::flush();
+        Auth::logout();
+
+        return redirect()->route('login');
     }
 }
