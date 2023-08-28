@@ -21,9 +21,13 @@ class User extends Authenticatable implements CanResetPassword
         'created_by',
         'updated_by'
     ];
-    
+    /**
+     * Current user can edit or not.
+     *
+     * @return boolean
+     */
     public function getCanEditAttribute(): bool
     {
-        return Auth::check() ? (Auth::user()->role==1) : false;
+        return Auth::check() ? (Auth::user()->role == 1) : false;
     }
 }

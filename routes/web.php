@@ -4,7 +4,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\PostOwner;
 use App\Http\Middleware\Role;
-use App\Http\Middleware\Password;
 use App\Http\Middleware\VerifyUserExists;
 use App\Http\Middleware\VerifyPostExists;
 use Illuminate\Support\Facades\Route;
@@ -40,7 +39,7 @@ Route::prefix('users')->controller(UserController::class)->name('users.')->group
 Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'create')->name('loginScreen');
     Route::post('login', 'authenticate')->name('login');
-    Route::get('changePassword/{id}', 'changePassword')->name('changePasswordScreen')->middleware([VerifyUserExists::class, Password::class]);
+    Route::get('changePassword/{id}', 'changePassword')->name('changePasswordScreen')->middleware([VerifyUserExists::class, Role::class]);
     Route::post('changePassword', 'changePasswordStore')->name('changePassword');
     Route::get('forgot-password', 'forgotPassword')->name('password.request');
     Route::post('forgot-password', 'forgotPasswordEmail')->name('password.email');

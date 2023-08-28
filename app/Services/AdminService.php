@@ -4,8 +4,6 @@ namespace App\Services;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\AdminServiceInterface;
 use App\Http\Requests\AdminPasswordStoreRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
 use App\Models\User;
 
 
@@ -17,12 +15,26 @@ class AdminService implements AdminServiceInterface
     {
         $this->userDao = $userDao;
     }
-
-    public function storeChangePassword(string $password, int $id){
+    /**
+     * Store changed password by Admin
+     *
+     * @param string $password
+     * @param integer $id
+     * @return void
+     */
+    public function storeChangePassword(string $password, int $id): void
+    {
         $this->userDao->storeChangedPassword($password, $id);
     }
 
-    public function updateUser(AdminPasswordStoreRequest $request){
+    /**
+     * Store changed user data by Admin
+     *
+     * @param AdminPasswordStoreRequest $request
+     * @return void
+     */
+    public function updateUser(AdminPasswordStoreRequest $request): void
+    {
         if ($request->img) {
             $filename = $request->img->getClientOriginalName();
             $request->img->storeAs('UserImages', $filename, 'public');
@@ -33,7 +45,7 @@ class AdminService implements AdminServiceInterface
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->has('role')? $request->role : '2',
+            'role' => $request->has('role') ? $request->role : '2',
             'img' => $filename,
             'created_by' => 1
         ];

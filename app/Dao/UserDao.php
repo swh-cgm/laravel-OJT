@@ -79,8 +79,6 @@ class UserDao implements UserDaoInterface
      */
     public function storeChangedPassword(string $password, int $id): void
     {
-        error_log('userdao pwd' . $password);
-        error_log('userid' . $id);
         $user = User::where('id', $id)->first();
 
         $user->password = Hash::make($password);

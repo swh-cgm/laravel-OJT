@@ -9,7 +9,6 @@ use App\Contracts\Services\UserServiceInterface;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
-
 class UserController extends Controller
 {
     protected $userService;
@@ -27,7 +26,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = $this->userService->getAllUser();
-        
+
         return view('users.index', ['users' => $users]);
     }
 
@@ -50,7 +49,7 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->role == 1) {
+            if (Auth::user()->role == config('constants.user_role.admin_no')) {
                 $request->validate([
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255|unique:users',
@@ -113,7 +112,7 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->role == 1) {
+            if (Auth::user()->role == config('constants.user_role.admin_no')) {
                 $request->validate([
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255',

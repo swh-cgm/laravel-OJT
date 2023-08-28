@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class PostOwner
 {
     protected $postService;
-    function __construct(PostServiceInterface $postService){
+    function __construct(PostServiceInterface $postService)
+    {
         $this->postService = $postService;
     }
     /**
@@ -27,18 +28,15 @@ class PostOwner
             $user = Auth::user();
             $post = $this->postService->getPostById($request->id);
 
-            if ($user->role == 1) {
+            if ($user->role == config('constants.user_role.admin_no')) {
                 return $next($request);
             } else {
                 if ($post->created_by == $user->id) {
                     return $next($request);
                 } else {
-                    
                     return back()->withErrors('You can only modify your own posts.');
                 }
             }
         }
-
-        return redirect()->route('loginScreen');
     }
 }

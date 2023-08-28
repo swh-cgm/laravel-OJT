@@ -69,7 +69,7 @@ class AuthController extends Controller
     public function changePassword($id): View
     {
         $user = $this->userService->getUserById($id);
-        return view('auth.changePassword', ['user'=>$user]);
+        return view('auth.changePassword', ['user' => $user]);
     }
 
     /**

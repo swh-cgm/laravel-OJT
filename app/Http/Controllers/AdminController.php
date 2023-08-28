@@ -9,6 +9,7 @@ use App\Http\Requests\AdminPasswordStoreRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+
 class AdminController extends Controller
 {
     protected $postService;
@@ -31,7 +32,7 @@ class AdminController extends Controller
     {
         $data = $this->postService->getPostById($id);
         return view('posts.edit', ['post' => $data, 'updated_by' => Auth::user()->id]);
-    }   
+    }
     /**
      * Edit user
      *
@@ -53,8 +54,8 @@ class AdminController extends Controller
     public function updateUser(AdminPasswordStoreRequest $request): RedirectResponse
     {
         $this->adminService->updateUser($request);
-        
-        if($request->new_password!=null){
+
+        if ($request->new_password != null) {
             $this->adminService->storeChangePassword($request->new_password, $request->id);
         }
         return back();

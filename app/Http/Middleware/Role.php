@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 
 class Role
 {
@@ -16,22 +16,19 @@ class Role
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return redirect()->route('loginScreen');
-        }else{    
-            $user=Auth::user();
-            if($user->role == 1){
+        } else {
+            $user = Auth::user();
+            if ($user->role == 1) {
                 return $next($request);
-            }
-            else{
-            if($user->id == $request->id){
-                return $next($request);
-            }
-            else{
-                return back()->withErrors('You can only modify your own profile.');
+            } else {
+                if ($user->id == $request->id) {
+                    return $next($request);
+                } else {
+                    return back()->withErrors('You can only modify your own profile.');
+                }
             }
         }
-        }
-        return redirect()->route('loginScreen');
     }
 }

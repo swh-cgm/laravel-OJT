@@ -38,7 +38,7 @@ class UserService implements UserServiceInterface
             'name' => $request->name,
             'email' => $request->email,
             'password' => $encrypted,
-            'role' => $request->has('role')? $request->role : '2',
+            'role' => $request->has('role')? $request->role : config('constants.user_role.member_no'),
             'img' => $filename,
             'created_by' => 1
         ];
@@ -86,7 +86,7 @@ class UserService implements UserServiceInterface
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->has('role')? $request->role : '2',
+            'role' => $request->has('role')? $request->role : config('constants.user_role.member_no'),
             'img' => $filename,
             'created_by' => 1
         ];
@@ -103,6 +103,12 @@ class UserService implements UserServiceInterface
         return $this->userDao->getAllUser();
     }
 
+    /**
+     * Verify user exists in User table
+     *
+     * @param Request $request
+     * @return boolean
+     */
     public function verifyUserExists(Request $request): bool
     {
         return $this->userDao->verifyUserExists($request);
