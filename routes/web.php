@@ -51,3 +51,4 @@ Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::get('posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.delete');
 
 Route::post('posts/{post_id}/comments/{user_id}', [CommentController::class, 'store'])->name('posts.comment.store');
+Route::get('posts/{post_id}/comments', [CommentController::class, 'index'])->name('posts.comment.list');

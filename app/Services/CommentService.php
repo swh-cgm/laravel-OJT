@@ -1,6 +1,8 @@
 <?php 
 
 namespace App\Services;
+
+use Illuminate\Http\Request;
 use App\Contracts\Dao\CommentDaoInterface;
 use App\Contracts\Services\CommentServiceInterface;
 use App\Http\Requests\StoreCommentRequest;
@@ -12,8 +14,8 @@ class CommentService implements CommentServiceInterface{
         $this->commentDao = $commentDao;
     }
 
-    public function getCommentByPostId(){
-        //
+    public function getCommentByPostId(Request $request){
+        return $this->commentDao->getCommentByPostId($request->post_id);
     }
 
     public function insert(StoreCommentRequest $request){

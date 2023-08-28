@@ -3,7 +3,7 @@
 namespace App\Contracts\Dao;
 
 interface CommentDaoInterface{
-    public function getCommentByPostId();
+    public function getCommentByPostId(int $post_id);
 
     public function insert(array $insertData);
 

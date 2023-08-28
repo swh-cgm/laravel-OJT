@@ -17,9 +17,9 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -35,8 +35,6 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        error_log('Post id'.$request->post_id);
-        error_log('User id'.$request->user_id);
         $this->commentService->insert($request);
         return back();
     }
