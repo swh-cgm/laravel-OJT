@@ -80,9 +80,9 @@ class CommentService implements CommentServiceInterface
      * Update comment
      *
      * @param StoreCommentRequest $request
-     * @return Comment
+     * @return string
      */
-    public function update(StoreCommentRequest $request): Comment
+    public function update(StoreCommentRequest $request): string
     {
         $this->commentDao->update($request->id, ["comment" => $request->user_comment]);
         $comment = $this->commentDao->getCommentById($request->id);

@@ -33,9 +33,9 @@ class CommentDao implements CommentDaoInterface
      * get comment by comment id
      *
      * @param integer $id
-     * @return Collection
+     * @return string
      */
-    public function getCommentById(int $id): Collection
+    public function getCommentById(int $id): string
     {
         return Comment::where('id', $id)->first()->comment;
     }
@@ -55,7 +55,7 @@ class CommentDao implements CommentDaoInterface
      * Delete comment
      *
      * @param integer $id
-     * @return void
+    * @return void
      */
     public function delete(int $id): void
     {
@@ -67,9 +67,9 @@ class CommentDao implements CommentDaoInterface
      *
      * @param integer $id
      * @param array $updateData
-     * @return Comment
+     * @return int
      */
-    public function update(int $id, array $updateData): Comment
+    public function update(int $id, array $updateData): int
     {
         return Comment::where('id', $id)->update($updateData);
     }

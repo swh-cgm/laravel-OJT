@@ -31,9 +31,9 @@ class CommentController extends Controller
      *
      * @param StoreCommentRequest $request
      * @param Comment $comment
-     * @return Comment
+     * @return string
      */
-    public function update(StoreCommentRequest $request, Comment $comment): Comment
+    public function update(StoreCommentRequest $request, Comment $comment): string
     {
         return $this->commentService->update($request);
     }
