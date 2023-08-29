@@ -15,21 +15,21 @@
     <div>Name: {{ $user->name }}</div>
     <div>email: {{ $user->email }}</div>
     <div>Role: {{ ($user->role == config('constants.user_role.admin_no')) ? config('constants.user_role.admin_role') : config('constants.user_role.member_role') }}</div>
-    <div>
-        @if(count($comments)!=0)
-            @foreach($comments as $cmtGrp)
-              @if(count($cmtGrp))
-                <a class="comment-post" href="{{ route('posts.show', $cmtGrp->first()->post->id) }}" rel="post">{{$cmtGrp->first()->post->title}}</a><br>
-              @endif
-              @foreach($cmtGrp as $comment)
 
-                    <div class="comment-wrap">
-                      <p class="comment-text">{{$comment->comment}}<p>
-                      <p class="comment-date">{{ date('Y/m/d', strtotime($comment->updated_at))}}</p>
-                  </div>
-              @endforeach
+      <div>
+        @if(count($posts)!=0)
+            @foreach($posts as $post)
+                <div class="user-posts">
+                    Post: <a href="{{ route('posts.show', $post->id) }}" alt="post">{{$post->title}}</a><br>
+                    @if(count($post->comments)!=0)
+                        Comments
+                        @foreach($post->comments as $comment)
+                            <div class="user-comments">{{$comment->comment}}</div>
+                        @endforeach
+                    @endif
+                </div>
             @endforeach
-           @endif
+        @endif
       </div>
 </div>
 @endsection

@@ -116,4 +116,15 @@ class UserDao implements UserDaoInterface
     {
         return User::findOrFail($request->id) ? true : false;
     }
+
+    /**
+     * Get post by userid
+     *
+     * @param integer $userId
+     * @return Collection
+     */
+    public function getPostByUserId(int $userId): Collection
+    {
+        return User::find($userId)->posts;
+    }
 }

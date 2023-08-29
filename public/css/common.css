@@ -96,3 +96,10 @@ h6 {
 .edit-comment:hover {
   cursor: pointer;
 }
+
+.user-posts {
+  border: 2px solid gray;
+  margin: 20px 0px;
+  padding: 10px;
+  font-size: 1.5em;
+}

@@ -86,9 +86,9 @@ class UserController extends Controller
     public function show(int $id): mixed
     {
         $data = $this->userService->getUserById($id);
-        $comments = $this->commentService->getCommentByUserId($id);
+        $posts = $this->userService->getPostByUserId($id);
         if ($data != null) {
-            return view('users.detail', ['user' => $data, 'comments' => $comments]);
+            return view('users.detail', ['user' => $data, 'posts' => $posts]);
         } else {
             return redirect()->route('users.index')->with('failed', 'User Does Not Exist');
         }

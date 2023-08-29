@@ -51,4 +51,14 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(Comment::class);
     }
+
+        /**
+     * Laravel Relationship: User HasMany Posts
+     *
+     * @return HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'created_by');
+    }
 }
