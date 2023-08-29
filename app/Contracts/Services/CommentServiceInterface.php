@@ -2,15 +2,17 @@
 
 namespace App\Contracts\Services;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreCommentRequest;
 
-interface CommentServiceInterface{
-    public function getCommentByPostId(Request $request);
+interface CommentServiceInterface
+{
+    public function getCommentByPostId(int $postId);
+
+    public function getCommentByUserId(int $userId);
 
     public function insert(StoreCommentRequest $request);
 
-    public function delete();
+    public function delete(int $id);
 
-    public function update();
+    public function update(StoreCommentRequest $request);
 }

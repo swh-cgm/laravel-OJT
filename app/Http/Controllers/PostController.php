@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\CommentServiceInterface;
 use App\Contracts\Services\PostServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
 use App\Http\Requests\StorePostRequest;
@@ -16,10 +17,12 @@ class PostController extends Controller
 {
     protected $postService;
     protected $userService;
-    public function __construct(PostServiceInterface $postService, UserServiceInterface $userService)
+    protected $commentService;
+    public function __construct(PostServiceInterface $postService, UserServiceInterface $userService, CommentServiceInterface $commentService)
     {
         $this->postService = $postService;
         $this->userService = $userService;
+        $this->commentService = $commentService;
     }
 
     /**
@@ -30,7 +33,6 @@ class PostController extends Controller
     public function index(): View
     {
         $posts = $this->postService->getAllPost();
-
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -52,9 +54,9 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request): RedirectResponse
     {
-        $post_id = $this->postService->insert($request);
+        $postId = $this->postService->insert($request);
 
-        return redirect()->route('posts.show', [$post_id])->with('success', 'Post created successfully');
+        return redirect()->route('posts.show', [$postId])->with('success', 'Post created successfully');
     }
 
     /**
@@ -67,7 +69,8 @@ class PostController extends Controller
     {
         $post = $this->postService->getPostById($id);
         $originalPoster = $this->userService->getUserById($post->created_by);
-        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster]);
+        $comments = $this->commentService->getCommentByPostId($id);
+        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster, 'comments' => $comments]);
     }
 
     /**

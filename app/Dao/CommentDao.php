@@ -1,24 +1,76 @@
 <?php
 
 namespace App\Dao;
+
 use App\Contracts\Dao\CommentDaoInterface;
 use App\Models\Comment;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Collection;
 
-class CommentDao implements CommentDaoInterface{
-    public function getCommentByPostId(int $post_id):Collection
+class CommentDao implements CommentDaoInterface
+{
+    public function getCommentByPostId(int $postId): Collection
     {
-        return Comment::where('post_id', $post_id)->orderBy('updated_at', 'DESC')->get();
-    }
-    public function insert(array $insertData){
-        Comment::create($insertData);
+        $comments = Post::find($postId)->comments;
+        return $comments;
     }
 
-    public function delete(){
-        //
+    /**
+     * Get comment by user id
+     *
+     * @param integer $userId
+     * @return Collection
+     */
+    public function getCommentByUserId(int $userId): Collection
+    {
+        $user = User::find($userId);
+        $comments = $user->comments()->get()->groupBy('post_id');
+        return $comments;
     }
 
-    public function update(){
-        //
+    /**
+     * get comment by comment id
+     *
+     * @param integer $id
+     * @return Collection
+     */
+    public function getCommentById(int $id): Collection
+    {
+        return Comment::where('id', $id)->first()->comment;
+    }
+
+    /**
+     * Insert new comment into table
+     *
+     * @param array $insertData
+     * @return Comment
+     */
+    public function insert(array $insertData): Comment
+    {
+        return Comment::create($insertData);
+    }
+
+    /**
+     * Delete comment
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        Comment::where('id', $id)->delete();
+    }
+
+    /**
+     * Update comment
+     *
+     * @param integer $id
+     * @param array $updateData
+     * @return Comment
+     */
+    public function update(int $id, array $updateData): Comment
+    {
+        return Comment::where('id', $id)->update($updateData);
     }
 }

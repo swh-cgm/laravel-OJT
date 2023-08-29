@@ -54,7 +54,7 @@ Route::prefix('posts')->controller(PostController::class)->name('posts.')->group
     Route::post('create', 'store')->name('store');
     Route::get('edit/{id}', 'edit')->name('edit')->middleware([VerifyPostExists::class, PostOwner::class]);
     Route::post('edit', 'update')->name('update')->middleware(PostOwner::class);
-    Route::get('{id}', 'show')->name('show')->middleware(VerifyPostExists::class);
+    Route::get('{id}', 'show')->name('show')->middleware([VerifyPostExists::class]);
     Route::get('delete/{id}', 'destroy')->name('delete')->middleware([VerifyPostExists::class, PostOwner::class]);
 });
 
@@ -64,17 +64,10 @@ Route::prefix('admin')->controller(AdminController::class)->name('admin.')->grou
     Route::post('edit/users/update', 'updateUser')->name('edit.users.update');
 });
 
-// Route::get('posts/index', [PostController::class, 'index'])->name('posts.index');
-// Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
-// Route::post('posts/create', [PostController::class, 'store'])->name('posts.store');
-
-// Route::get('posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
-// Route::post('posts/edit', [PostController::class, 'update'])->name('posts.update');
-
-// Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
-// Route::get('posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.delete');
-
-Route::post('posts/{post_id}/comments/{user_id}', [CommentController::class, 'store'])->name('posts.comment.store');
-Route::get('posts/{post_id}/comments', [CommentController::class, 'index'])->name('posts.comment.list');
+Route::controller(CommentController::class)->group(function(){
+    Route::post('posts/{post_id}/comments/{user_id}', 'store')->name('posts.comment.store');
+    Route::get('comments/delete/{id}', 'destroy')->middleware(Role::class)->name('comments.delete');
+    Route::post('comments/update/{id}', 'update')->middleware(Role::class)->name('comments.update');
+});
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

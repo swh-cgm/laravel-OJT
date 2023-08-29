@@ -24,7 +24,7 @@ td {
   align-items: center;
 }
 
-.header span{
+.header span {
   margin: 0px 10px;
 }
 
@@ -69,7 +69,30 @@ form {
 }
 
 .post-container {
-  margin: 10px auto;
-  padding: 20px 10px;
+  margin: 20px 0px;
+  padding: 20px;
   border: 2px solid gray;
+}
+
+.comment-wrap {
+  margin: 10px 0px;
+  padding: 5px;
+  border: 2px solid gray;
+}
+
+.comment-user {
+  font-size: 1.5rem;
+}
+
+.comment-text {
+  font-size: 1.5rem;
+}
+
+p,
+h6 {
+  margin-bottom: 0px;
+}
+
+.edit-comment:hover {
+  cursor: pointer;
 }

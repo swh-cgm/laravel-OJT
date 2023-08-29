@@ -1,38 +1,92 @@
-<?php 
+<?php
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
+use App\Models\Comment;
 use App\Contracts\Dao\CommentDaoInterface;
 use App\Contracts\Services\CommentServiceInterface;
 use App\Http\Requests\StoreCommentRequest;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
-class CommentService implements CommentServiceInterface{
+class CommentService implements CommentServiceInterface
+{
 
     protected $commentDao;
-    public function __construct(CommentDaoInterface $commentDao){
+    public function __construct(CommentDaoInterface $commentDao)
+    {
         $this->commentDao = $commentDao;
     }
 
-    public function getCommentByPostId(Request $request){
-        return $this->commentDao->getCommentByPostId($request->post_id);
+    /**
+     * Get comment by post id
+     *
+     * @param integer $postId
+     * @return Collection
+     */
+    public function getCommentByPostId(int $postId): Collection
+    {
+        return $this->commentDao->getCommentByPostId($postId);
     }
 
-    public function insert(StoreCommentRequest $request){
+    /**
+     * Get comment by user id
+     *
+     * @param integer $userId
+     * @return Collection
+     */
+    public function getCommentByUserId(int $userId): Collection
+    {
+        return $this->commentDao->getCommentByUserId($userId);
+    }
+
+    /**
+     * Insert new comment into table
+     *
+     * @param StoreCommentRequest $request
+     * @return string
+     */
+    public function insert(StoreCommentRequest $request): string
+    {
         $insertArray = [
             'comment' => $request->user_comment,
             'user_id' => $request->user_id,
             'post_id' => $request->post_id
         ];
-        $this->commentDao->insert($insertArray);
+        $newComment = $this->commentDao->insert($insertArray);
+        $user = Auth::user()->name;
+        $userId = Auth::user()->id;
+
+        $response = [
+            'comment' => $newComment,
+            'user' => $user,
+            'userId' => $userId
+        ];
+        return json_encode($response);
     }
 
-    public function delete(){
-        //
+    /**
+     * Delete comment
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->commentDao->delete($id);
     }
 
-    public function update(){
-        //
-    }
+    /**
+     * Update comment
+     *
+     * @param StoreCommentRequest $request
+     * @return Comment
+     */
+    public function update(StoreCommentRequest $request): Comment
+    {
+        $this->commentDao->update($request->id, ["comment" => $request->user_comment]);
+        $comment = $this->commentDao->getCommentById($request->id);
 
+        return $comment;
+    }
 }

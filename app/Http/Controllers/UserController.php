@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\CommentServiceInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -12,10 +13,12 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     protected $userService;
+    protected $commentService;
 
-    public function __construct(UserServiceInterface $userService)
+    public function __construct(UserServiceInterface $userService, CommentServiceInterface $commentService)
     {
         $this->userService = $userService;
+        $this->commentService = $commentService;
     }
 
     /**
@@ -83,8 +86,9 @@ class UserController extends Controller
     public function show(int $id): mixed
     {
         $data = $this->userService->getUserById($id);
+        $comments = $this->commentService->getCommentByUserId($id);
         if ($data != null) {
-            return view('users.detail', ['user' => $data]);
+            return view('users.detail', ['user' => $data, 'comments' => $comments]);
         } else {
             return redirect()->route('users.index')->with('failed', 'User Does Not Exist');
         }
