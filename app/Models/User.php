@@ -42,6 +42,11 @@ class User extends Authenticatable implements CanResetPassword
         return $this->role == config('constants.user_role.admin_no');
     }
 
+    /**
+     * Laravel Relationship: User HasMany Comments
+     *
+     * @return HasMany
+     */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
