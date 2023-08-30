@@ -52,7 +52,7 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+            if (Auth::user()->isAdmin()) {
                 $request->validate([
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255|unique:users',
@@ -116,7 +116,7 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+            if (Auth::user()->isAdmin()) {
                 $request->validate([
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255',

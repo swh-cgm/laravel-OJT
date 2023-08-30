@@ -59,7 +59,7 @@
         @endif
 
         @if(Auth::check())
-          @if(Auth::user()->role == config('constants.user_role.admin_no'))
+          @if(Auth::user()->isAdmin())
             <div>
                 <label for="user-role">Admin</label>
                 <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ old('role') == config('constants.user_role.admin_no')? 'checked': '' }}>

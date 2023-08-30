@@ -14,7 +14,7 @@
     <div>User ID: {{ $user->id }}</div>
     <div>Name: {{ $user->name }}</div>
     <div>email: {{ $user->email }}</div>
-    <div>Role: {{ ($user->role == config('constants.user_role.admin_no')) ? config('constants.user_role.admin_role') : config('constants.user_role.member_role') }}</div>
+    <div>Role: {{ ($user->isAdmin()) ? config('constants.user_role.admin_role') : config('constants.user_role.member_role') }}</div>
 
       <div>
         @if(count($posts)!=0)

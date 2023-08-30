@@ -18,7 +18,7 @@ class Comment extends Model
 
     public function getCanEditAttribute(): bool
     {
-        return Auth::check() ? (Auth::user()->role == config('constants.user_role.admin_no')) || (Auth::user()->id == $this->user_id) : false;
+        return Auth::check() ? (Auth::user()->isAdmin()) || (Auth::user()->id == $this->user_id) : false;
     }
 
     /**

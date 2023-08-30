@@ -12,7 +12,7 @@ class AdminPasswordStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check() ? Auth::user()->role = config('constants.user_role.admin_no') : false;
+        return Auth::check() ? Auth::user()->isAdmin() : false;
     }
 
     /**

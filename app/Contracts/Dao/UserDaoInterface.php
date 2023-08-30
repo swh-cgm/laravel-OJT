@@ -21,5 +21,5 @@ interface UserDaoInterface
 
     public function verifyUserExists(Request $request);
 
-    public function getPostByUserId(int $userId);
+    public function getPostByUserId(int $userIkd);
 }

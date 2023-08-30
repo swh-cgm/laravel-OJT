@@ -50,10 +50,10 @@
         @endif
         <div>
             <label for="user-role">Admin</label>
-            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ $user->role == config('constants.user_role.admin_no')? 'checked': '' }}>
+            <input type="radio" name="role" id="admin-role" value="{{config('constants.user_role.admin_no')}}" {{ $user->isAdmin()? 'checked': '' }}>
 
             <label for="user-role">Member</label>
-            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}" {{ $user->role == config('constants.user_role.member_no')? 'checked': '' }}>
+            <input type="radio" name="role" id="user-role" value="{{config('constants.user_role.member_no')}}" {{ !$user->isAdmin()? 'checked': '' }}>
         </div>
         @if ($errors->has('role'))
         <div>

@@ -24,7 +24,7 @@
         <span>
             @if(Auth::check())
             @if(Route::currentRouteName()!='users.create' || Auth::user()->role != config('constants.user_role.member_no'))
-                <span><a href="{{route('users.edit', Auth::user()->id)}}" rel="user-profile">@if(Auth::user()->role==config('constants.user_role.admin_no')) Admin: @endif{{Auth::user()->name}}</a></span> 
+                <span><a href="{{route('users.edit', Auth::user()->id)}}" rel="user-profile">@if(Auth::user()->isAdmin()) Admin: @endif{{Auth::user()->name}}</a></span> 
                 <span><a href="{{ route('logout') }}">Logout</a></span>       
 
             @endif

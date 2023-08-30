@@ -17,7 +17,7 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+            if (Auth::user()->isAdmin()) {
                 return $next($request);
             } else {
                 return redirect()->route('posts.index');

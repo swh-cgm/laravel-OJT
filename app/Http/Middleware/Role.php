@@ -20,7 +20,7 @@ class Role
             return redirect()->route('loginScreen');
         } else {
             $user = Auth::user();
-            if ($user->role == config('constants.user_role.admin_no')) {
+            if ($user->isAdmin()) {
                 return $next($request);
             } else {
                 if ($user->id == $request->id) {
