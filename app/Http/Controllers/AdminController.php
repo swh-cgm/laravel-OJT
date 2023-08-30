@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use App\Contracts\Services\AdminServiceInterface;
 use App\Contracts\Services\PostServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
+use App\Exports\CommentsExport;
+use App\Exports\PostsExport;
+use App\Exports\UsersExport;
 use App\Http\Requests\AdminPasswordStoreRequest;
+use App\Http\Requests\CsvUploadRequest;
+use App\Imports\PostsImport;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -59,5 +66,22 @@ class AdminController extends Controller
             $this->adminService->storeChangePassword($request->new_password, $request->id);
         }
         return back();
+    }
+
+    public function csvShow()
+    {
+        return view('admin.file');
+    }
+
+    public function postCsvDownload()
+    {
+        return $this->adminService->postCsvDownload();
+    }
+
+    public function postCsvUpload(CsvUploadRequest $request)
+    {
+        $failures = $this->adminService->postCsvUpload($request);
+
+        return back()->with('failures', $failures);
     }
 }

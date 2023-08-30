@@ -15,7 +15,12 @@ class Comment extends Model
         'post_id',
         'comment'
     ];
-
+    
+    /**
+     * Check if the current user can edit the comment.
+     *
+     * @return boolean
+     */
     public function getCanEditAttribute(): bool
     {
         return Auth::check() ? (Auth::user()->isAdmin()) || (Auth::user()->id == $this->user_id) : false;

@@ -62,6 +62,9 @@ Route::prefix('admin')->controller(AdminController::class)->name('admin.')->grou
     Route::get('edit/users/{id}', 'editUser')->name('edit.users')->middleware(Admin::class);
     Route::get('edit/posts/{id}', 'editPost')->name('edit.posts')->middleware(Admin::class);
     Route::post('edit/users/update', 'updateUser')->name('edit.users.update');
+    Route::get('file/csv', 'csvShow')->middleware(Admin::class)->name('file.csv.show');
+    Route::get('file/csv/postTableDownload', 'postCsvDownload')->middleware(Admin::class)->name('file.csv.posts.download');
+    Route::post('file/csv/userCsvUpload', 'postCsvUpload')->name('file.csv.posts.upload');
 });
 
 Route::controller(CommentController::class)->group(function(){
