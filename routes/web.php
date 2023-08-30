@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\PostOwner;
@@ -53,7 +54,7 @@ Route::prefix('posts')->controller(PostController::class)->name('posts.')->group
     Route::post('create', 'store')->name('store');
     Route::get('edit/{id}', 'edit')->name('edit')->middleware([VerifyPostExists::class, PostOwner::class]);
     Route::post('edit', 'update')->name('update')->middleware(PostOwner::class);
-    Route::get('{id}', 'show')->name('show')->middleware(VerifyPostExists::class);
+    Route::get('{id}', 'show')->name('show')->middleware([VerifyPostExists::class]);
     Route::get('delete/{id}', 'destroy')->name('delete')->middleware([VerifyPostExists::class, PostOwner::class]);
 });
 
@@ -61,6 +62,12 @@ Route::prefix('admin')->controller(AdminController::class)->name('admin.')->grou
     Route::get('edit/users/{id}', 'editUser')->name('edit.users')->middleware(Admin::class);
     Route::get('edit/posts/{id}', 'editPost')->name('edit.posts')->middleware(Admin::class);
     Route::post('edit/users/update', 'updateUser')->name('edit.users.update');
+});
+
+Route::controller(CommentController::class)->group(function(){
+    Route::post('posts/{post_id}/comments/{user_id}', 'store')->name('posts.comment.store');
+    Route::get('comments/delete/{id}', 'destroy')->middleware(Role::class)->name('comments.delete');
+    Route::post('comments/update/{id}', 'update')->middleware(Role::class)->name('comments.update');
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

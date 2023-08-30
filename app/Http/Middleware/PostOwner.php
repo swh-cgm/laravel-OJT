@@ -28,7 +28,7 @@ class PostOwner
             $user = Auth::user();
             $post = $this->postService->getPostById($request->id);
 
-            if ($user->role == config('constants.user_role.admin_no')) {
+            if ($user->isAdmin()) {
                 return $next($request);
             } else {
                 if ($post->created_by == $user->id) {

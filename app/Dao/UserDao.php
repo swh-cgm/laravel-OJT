@@ -32,7 +32,7 @@ class UserDao implements UserDaoInterface
      */
     public function getUserById(int $id): User
     {
-        $data = User::where('id', $id)->first();
+        $data = User::with(['posts', 'posts.comments'])->where('id', $id)->first();
         return $data;
     }
 
@@ -115,5 +115,16 @@ class UserDao implements UserDaoInterface
     public function verifyUserExists(Request $request): bool
     {
         return User::findOrFail($request->id) ? true : false;
+    }
+
+    /**
+     * Get post by userid
+     *
+     * @param integer $userId
+     * @return Collection
+     */
+    public function getPostByUserId(int $userId): Collection
+    {
+        return User::find($userId)->posts;
     }
 }

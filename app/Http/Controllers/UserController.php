@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\CommentServiceInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -12,10 +13,12 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     protected $userService;
+    protected $commentService;
 
-    public function __construct(UserServiceInterface $userService)
+    public function __construct(UserServiceInterface $userService, CommentServiceInterface $commentService)
     {
         $this->userService = $userService;
+        $this->commentService = $commentService;
     }
 
     /**
@@ -49,7 +52,7 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+            if (Auth::user()->isAdmin()) {
                 $request->validate([
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255|unique:users',
@@ -112,7 +115,7 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->role == config('constants.user_role.admin_no')) {
+            if (Auth::user()->isAdmin()) {
                 $request->validate([
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255',

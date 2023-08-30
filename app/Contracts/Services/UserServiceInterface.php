@@ -16,4 +16,6 @@ interface UserServiceInterface
     public function getAllUser();
 
     public function verifyUserExists(Request $request);
+
+    public function getPostByUserId(int $userId);
 }

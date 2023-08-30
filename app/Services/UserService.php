@@ -113,4 +113,15 @@ class UserService implements UserServiceInterface
     {
         return $this->userDao->verifyUserExists($request);
     }
+
+    /**
+     * Get Post by userId
+     *
+     * @param integer $userId
+     * @return Collection
+     */
+    public function getPostByUserId(int $userId): Collection
+    {
+        return $this->userDao->getPostByUserId($userId);
+    }
 }

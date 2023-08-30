@@ -20,4 +20,6 @@ interface UserDaoInterface
     public function storeResetPassword(Request $request);
 
     public function verifyUserExists(Request $request);
+
+    public function getPostByUserId(int $userIkd);
 }

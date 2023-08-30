@@ -24,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
 
         //Admin
         $this->app->bind('App\Contracts\Services\AdminServiceInterface', 'App\Services\AdminService');
+
+        //Comment
+        $this->app->bind('App\Contracts\Services\CommentServiceInterface', 'App\Services\CommentService');
+        $this->app->bind('App\Contracts\Dao\CommentDaoInterface', 'App\Dao\CommentDao');
     }
 
     /**

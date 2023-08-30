@@ -11,9 +11,9 @@ interface PostDaoInterface
 
     public function getPublicPost();
 
-    public function getPostById(int $post_id);
+    public function getPostById(int $postId);
 
-    public function update(array $updateData, int $post_id);
+    public function update(array $updateData, int $postId);
 
     public function delete(int $id);
 

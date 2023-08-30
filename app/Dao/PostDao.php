@@ -2,9 +2,9 @@
 namespace App\Dao;
 
 use App\Contracts\Dao\PostDaoInterface;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostDao implements PostDaoInterface
@@ -28,36 +28,32 @@ class PostDao implements PostDaoInterface
      */
     public function getAllPost(): Collection
     {
-        $data = DB::table('posts')
-                    ->join('users', 'posts.created_by', '=', 'users.id')
-                    ->select('*', 'posts.id as id')
-                    ->orderBy('posts.updated_at', 'DESC')
-                    ->get();
-
-        return $data;
+        $userIds = User::select('id')->get()->pluck('id');
+        $posts = Post::with('comments')->whereIn('created_by', $userIds)->get();
+        return $posts;
     }
 
     /**
      * Get post by id
      *
-     * @param integer $post_id
+     * @param integer $postId
      * @return Post
      */
-    public function getPostById(int $post_id): Post
+    public function getPostById(int $postId): Post
     {
-        return Post::where('id', $post_id)->first();
+        return Post::with(['comments', 'comments.user'])->where('id', $postId)->first();
     }
 
     /**
      * Update post in database
      *
      * @param array $updateData
-     * @param integer $post_id
+     * @param integer $postId
      * @return void
      */
-    public function update(array $updateData, int $post_id): void
+    public function update(array $updateData, int $postId): void
     {
-        Post::where('id', $post_id)->update($updateData);
+        Post::where('id', $postId)->update($updateData);
     }
 
     /**
@@ -78,14 +74,10 @@ class PostDao implements PostDaoInterface
      */
     public function getPublicPost(): collection
     {
-        $data = DB::table('posts')
-                    ->join('users', 'posts.created_by', '=', 'users.id')
-                    ->select('*', 'posts.id as id')
-                    ->where('public_flag', true)
-                    ->orderBy('posts.updated_at', 'DESC')
-                    ->get();
+        $userIds = User::select('id')->get()->pluck('id');
+        $posts = Post::with('comments')->whereIn('created_by', $userIds)->where('public_flag', true)->get();
 
-        return $data;
+        return $posts;
     }
     /**
      * Check if post exists
