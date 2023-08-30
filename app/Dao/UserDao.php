@@ -32,7 +32,7 @@ class UserDao implements UserDaoInterface
      */
     public function getUserById(int $id): User
     {
-        $data = User::where('id', $id)->first();
+        $data = User::with(['posts', 'posts.comments'])->where('id', $id)->first();
         return $data;
     }
 

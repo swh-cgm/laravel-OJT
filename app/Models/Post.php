@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'title',
         'description',
@@ -17,7 +18,6 @@ class Post extends Model
         'created_by',
         'updated_by'
     ];
-    use HasFactory;
 
     /**
      * Can the current user edit the post.
