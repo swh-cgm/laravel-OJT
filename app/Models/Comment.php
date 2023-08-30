@@ -17,7 +17,7 @@ class Comment extends Model
     ];
     
     /**
-     * Check if the current user can edit the comment.
+     * Check if user can edit the comment
      *
      * @return boolean
      */

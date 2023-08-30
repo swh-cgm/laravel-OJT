@@ -17,8 +17,8 @@
     <div>Role: {{ ($user->isAdmin()) ? config('constants.user_role.admin_role') : config('constants.user_role.member_role') }}</div>
 
       <div>
-        @if(count($posts)!=0)
-            @foreach($posts as $post)
+        @if(count($user->posts)!=0)
+            @foreach($user->posts as $post)
                 <div class="user-posts">
                     Post: <a href="{{ route('posts.show', $post->id) }}" alt="post">{{$post->title}}</a><br>
                     @if(count($post->comments)!=0)
