@@ -68,9 +68,7 @@ class PostController extends Controller
     public function show(int $id): View
     {
         $post = $this->postService->getPostById($id);
-        $originalPoster = $this->userService->getUserById($post->created_by);
-        $comments = $this->commentService->getCommentByPostId($id);
-        return view('posts.post', ['post' => $post, 'originalPoster' => $originalPoster, 'comments' => $comments]);
+        return view('posts.post', ['post' => $post]);
     }
 
     /**
