@@ -11,6 +11,7 @@ use App\Http\Requests\CsvUploadRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AdminController extends Controller
 {
@@ -86,9 +87,9 @@ class AdminController extends Controller
     /**
      * Download posts table as csv file
      *
-     * @return RedirectResponse
+     * @return BinaryFileResponse
      */
-    public function postCsvDownload(): RedirectResponse
+    public function postCsvDownload(): BinaryFileResponse
     {
         return $this->adminService->postCsvDownload();
     }

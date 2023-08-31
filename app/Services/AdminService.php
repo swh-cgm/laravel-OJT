@@ -3,12 +3,12 @@ namespace App\Services;
 
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\AdminServiceInterface;
-use App\Exports\CommentsExport;
 use App\Exports\PostsExport;
 use App\Http\Requests\AdminPasswordStoreRequest;
 use App\Http\Requests\CsvUploadRequest;
 use App\Imports\PostsImport;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -75,7 +75,7 @@ class AdminService implements AdminServiceInterface
      * @param CsvUploadRequest $request
      * @return array
      */
-    public function postCsvUpload(CsvUploadRequest $request): array
+    public function postCsvUpload(CsvUploadRequest $request): Collection
     {
         $import = new PostsImport();
         $import->import($request->file('posts_csv'));

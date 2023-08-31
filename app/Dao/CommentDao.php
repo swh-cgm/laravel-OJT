@@ -10,6 +10,12 @@ use Illuminate\Support\Collection;
 
 class CommentDao implements CommentDaoInterface
 {
+    /**
+     * Get comment by post id
+     *
+     * @param integer $postId
+     * @return Collection
+     */
     public function getCommentByPostId(int $postId): Collection
     {
         $comments = Post::find($postId)->comments;

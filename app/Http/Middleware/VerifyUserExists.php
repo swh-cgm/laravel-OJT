@@ -21,10 +21,9 @@ class VerifyUserExists
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($this->userService->verifyUserExists($request)){
+        if ($this->userService->verifyUserExists($request)) {
             return $next($request);
-        }
-        else{
+        } else {
             return redirect()->route('posts.index')->withErrors('User does not exist.');
         }
         
