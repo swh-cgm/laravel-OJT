@@ -2,14 +2,20 @@
 
 namespace App\Http\Middleware;
 
+use App\Contracts\Services\CommentServiceInterface;
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 
-class Role
+class CommentOwner
 {
+    protected $commentService;
+
+    function __construct(CommentServiceInterface $commentService)
+    {
+        $this->commentService = $commentService;
+    }
     /**
      * Handle an incoming request.
      *
@@ -21,15 +27,15 @@ class Role
             return redirect()->route('loginScreen');
         } else {
             $user = Auth::user();
+            $comment = $this->commentService->getCommentById($request->id);
+
             if ($user->isAdmin()) {
                 return $next($request);
             } else {
-                Log::info('user_id'.$user->id);
-                Log::info('request_id'.$request->id);
-                if ($user->id == $request->id) {
+                if ($comment->user_id == $user->id) {
                     return $next($request);
                 } else {
-                    return back()->withErrors('You can only modify your own profile.');
+                    return back()->withErrors('You can only modify your own comments.');
                 }
             }
         }

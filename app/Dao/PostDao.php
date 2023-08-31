@@ -29,7 +29,7 @@ class PostDao implements PostDaoInterface
     public function getAllPost(): Collection
     {
         $userIds = User::select('id')->get()->pluck('id');
-        $posts = Post::with('comments')->whereIn('created_by', $userIds)->get();
+        $posts = Post::with('comments')->whereIn('created_by', $userIds)->orderBy('updated_at', 'DESC')->get();
         return $posts;
     }
 
@@ -75,7 +75,7 @@ class PostDao implements PostDaoInterface
     public function getPublicPost(): collection
     {
         $userIds = User::select('id')->get()->pluck('id');
-        $posts = Post::with('comments')->whereIn('created_by', $userIds)->where('public_flag', true)->get();
+        $posts = Post::with('comments')->whereIn('created_by', $userIds)->where('public_flag', true)->orderBy('updated_at')->get();
 
         return $posts;
     }

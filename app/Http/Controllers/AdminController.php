@@ -5,17 +5,12 @@ namespace App\Http\Controllers;
 use App\Contracts\Services\AdminServiceInterface;
 use App\Contracts\Services\PostServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
-use App\Exports\CommentsExport;
-use App\Exports\PostsExport;
-use App\Exports\UsersExport;
+use App\Http\Requests\AdminFormRequest;
 use App\Http\Requests\AdminPasswordStoreRequest;
 use App\Http\Requests\CsvUploadRequest;
-use App\Imports\PostsImport;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -27,6 +22,11 @@ class AdminController extends Controller
         $this->postService = $postService;
         $this->userService = $userService;
         $this->adminService = $adminService;
+    }
+
+    public function index()
+    {
+        return view('admin.index');
     }
 
     /**
@@ -68,20 +68,58 @@ class AdminController extends Controller
         return back();
     }
 
-    public function csvShow()
+    /**
+     * Show blade for downloading/uploading csv files
+     *
+     * @return void
+     */
+    public function csvShow(): View
     {
         return view('admin.file');
     }
 
-    public function postCsvDownload()
+    /**
+     * Download posts table as csv file
+     *
+     * @return RedirectResponse
+     */
+    public function postCsvDownload(): RedirectResponse
     {
         return $this->adminService->postCsvDownload();
     }
 
-    public function postCsvUpload(CsvUploadRequest $request)
+    /**
+     * Insert uploaded csv in post table and return rows that cannot be inserted.
+     *
+     * @param CsvUploadRequest $request
+     * @return RedirectResponse
+     */
+    public function postCsvUpload(CsvUploadRequest $request): RedirectResponse
     {
         $failures = $this->adminService->postCsvUpload($request);
 
         return back()->with('failures', $failures);
+    }
+
+    /**
+     * Show form for editing user info
+     *
+     * @param AdminFormRequest $request
+     * @return RedirectResponse
+     */
+    public function editUserForm(AdminFormRequest $request): RedirectResponse
+    {
+        return redirect()->route('admin.edit.users', $request->id);
+    }
+
+    /**
+     * Show form for editing post 
+     *
+     * @param AdminFormRequest $request
+     * @return RedirectResponse
+     */
+    public function editPostForm(AdminFormRequest $request): RedirectResponse
+    {
+        return redirect()->route('admin.edit.posts', $request->id);
     }
 }
