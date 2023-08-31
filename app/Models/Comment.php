@@ -15,7 +15,7 @@ class Comment extends Model
         'post_id',
         'comment'
     ];
-    
+
     /**
      * Check if user can edit the comment
      *

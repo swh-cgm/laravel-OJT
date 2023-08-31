@@ -10,6 +10,7 @@ use App\Http\Requests\CsvUploadRequest;
 use App\Imports\PostsImport;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 
 
@@ -58,11 +59,24 @@ class AdminService implements AdminServiceInterface
         $this->userDao->update($updateData, $request->id);
     }
 
-    public function postCsvDownload(){
-        return Excel::download(new PostsExport, 'posts_'.time().'.csv');
+    /**
+     * Download csv file
+     *
+     * @return BinaryFileResponse
+     */
+    public function postCsvDownload(): BinaryFileResponse
+    {
+        return Excel::download(new PostsExport, 'posts_' . time() . '.csv');
     }
 
-    public function postCsvUpload(CsvUploadRequest $request){
+    /**
+     * Undocumented function
+     *
+     * @param CsvUploadRequest $request
+     * @return array
+     */
+    public function postCsvUpload(CsvUploadRequest $request): array
+    {
         $import = new PostsImport();
         $import->import($request->file('posts_csv'));
         $failures = $import->failures();

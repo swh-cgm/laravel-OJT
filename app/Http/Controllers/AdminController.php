@@ -24,7 +24,12 @@ class AdminController extends Controller
         $this->adminService = $adminService;
     }
 
-    public function index()
+    /**
+     * Show admin index
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view('admin.index');
     }

@@ -24,8 +24,6 @@ class Role
             if ($user->isAdmin()) {
                 return $next($request);
             } else {
-                Log::info('user_id'.$user->id);
-                Log::info('request_id'.$request->id);
                 if ($user->id == $request->id) {
                     return $next($request);
                 } else {

@@ -28,6 +28,11 @@ class PostsImport implements ToModel, WithValidation, SkipsOnFailure
 
     }
 
+    /**
+     * Validation for csv rows
+     *
+     * @return array
+     */
     public function rules(): array
     {
         return [
