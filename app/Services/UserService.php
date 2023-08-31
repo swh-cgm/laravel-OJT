@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\UserServiceInterface;
@@ -34,13 +35,20 @@ class UserService implements UserServiceInterface
             $filename = "default.png";
         }
 
+        if (Auth::check()) {
+            if (Auth::user()->isAdmin())
+                $created_by = Auth::user()->id;
+        } else {
+            $created_by = null;
+        }
+
         $insertData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => $encrypted,
             'role' => $request->has('role')? $request->role : config('constants.user_role.member_no'),
             'img' => $filename,
-            'created_by' => 1
+            'created_by' => $created_by
         ];
         $this->userDao->insert($insertData);
     }
@@ -88,7 +96,7 @@ class UserService implements UserServiceInterface
             'email' => $request->email,
             'role' => $request->has('role')? $request->role : config('constants.user_role.member_no'),
             'img' => $filename,
-            'created_by' => 1
+            'updated_by' => Auth::user()->id
         ];
         $this->userDao->update($updateData, $request->id);
     }

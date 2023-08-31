@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\CommentOwner;
 use App\Http\Middleware\PostOwner;
 use App\Http\Middleware\Role;
 use App\Http\Middleware\VerifyUserExists;
@@ -24,7 +25,7 @@ use App\Http\Controllers\PostController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('posts.index');
 });
 
 Route::prefix('users')->controller(UserController::class)->name('users.')->group(function () {
@@ -59,15 +60,21 @@ Route::prefix('posts')->controller(PostController::class)->name('posts.')->group
 });
 
 Route::prefix('admin')->controller(AdminController::class)->name('admin.')->group(function() {
-    Route::get('edit/users/{id}', 'editUser')->name('edit.users')->middleware(Admin::class);
-    Route::get('edit/posts/{id}', 'editPost')->name('edit.posts')->middleware(Admin::class);
+    Route::get('index', 'index')->name('index')->middleware(Admin::class);
+    Route::get('edit/users/{id}', 'editUser')->name('edit.users')->middleware([Admin::class, VerifyUserExists::class]);
+    Route::post('edit/users', 'editUserForm')->name('edit.users.form');
+    Route::get('edit/posts/{id}', 'editPost')->name('edit.posts')->middleware([Admin::class, VerifyPostExists::class]);
+    Route::post('edit/posts', 'editPostForm')->name('edit.posts.form');
     Route::post('edit/users/update', 'updateUser')->name('edit.users.update');
+    Route::get('file/csv', 'csvShow')->middleware(Admin::class)->name('file.csv.show');
+    Route::get('file/csv/postTableDownload', 'postCsvDownload')->middleware(Admin::class)->name('file.csv.posts.download');
+    Route::post('file/csv/userCsvUpload', 'postCsvUpload')->name('file.csv.posts.upload');
 });
 
 Route::controller(CommentController::class)->group(function(){
     Route::post('posts/{post_id}/comments/{user_id}', 'store')->name('posts.comment.store');
-    Route::get('comments/delete/{id}', 'destroy')->middleware(Role::class)->name('comments.delete');
-    Route::post('comments/update/{id}', 'update')->middleware(Role::class)->name('comments.update');
+    Route::get('comments/delete/{id}', 'destroy')->middleware(CommentOwner::class)->name('comments.delete');
+    Route::post('comments/update/{id}', 'update')->middleware(CommentOwner::class)->name('comments.update');
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

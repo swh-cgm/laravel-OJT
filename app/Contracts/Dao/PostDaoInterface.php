@@ -2,6 +2,7 @@
 namespace App\Contracts\Dao;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CsvUploadRequest;
 
 interface PostDaoInterface
 {
@@ -18,4 +19,6 @@ interface PostDaoInterface
     public function delete(int $id);
 
     public function verifyPostExists(Request $request);
+
+    public function csvImport(CsvUploadRequest $request);
 }

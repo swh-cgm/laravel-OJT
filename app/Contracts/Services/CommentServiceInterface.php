@@ -15,4 +15,6 @@ interface CommentServiceInterface
     public function delete(int $id);
 
     public function update(StoreCommentRequest $request);
+
+    public function getCommentById(int $id);
 }

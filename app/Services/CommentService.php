@@ -87,6 +87,17 @@ class CommentService implements CommentServiceInterface
         $this->commentDao->update($request->id, ["comment" => $request->user_comment]);
         $comment = $this->commentDao->getCommentById($request->id);
 
-        return $comment;
+        return $comment->comment;
+    }
+
+    /**
+     * get comment by id
+     *
+     * @param integer $id
+     * @return Comment
+     */
+    public function getCommentById(int $id): Comment
+    {
+        return $this->commentDao->getCommentById($id);
     }
 }

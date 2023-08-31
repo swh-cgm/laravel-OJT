@@ -10,6 +10,12 @@ use Illuminate\Support\Collection;
 
 class CommentDao implements CommentDaoInterface
 {
+    /**
+     * Get comment by post id
+     *
+     * @param integer $postId
+     * @return Collection
+     */
     public function getCommentByPostId(int $postId): Collection
     {
         $comments = Post::find($postId)->comments;
@@ -33,11 +39,11 @@ class CommentDao implements CommentDaoInterface
      * get comment by comment id
      *
      * @param integer $id
-     * @return string
+     * @return Comment
      */
-    public function getCommentById(int $id): string
+    public function getCommentById(int $id): Comment
     {
-        return Comment::where('id', $id)->first()->comment;
+        return Comment::where('id', $id)->first();
     }
 
     /**

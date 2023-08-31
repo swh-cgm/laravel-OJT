@@ -2,10 +2,13 @@
 namespace App\Dao;
 
 use App\Contracts\Dao\PostDaoInterface;
+use App\Http\Requests\CsvUploadRequest;
+use App\Imports\PostsImport;
 use Illuminate\Support\Collection;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostDao implements PostDaoInterface
 {
@@ -29,7 +32,7 @@ class PostDao implements PostDaoInterface
     public function getAllPost(): Collection
     {
         $userIds = User::select('id')->get()->pluck('id');
-        $posts = Post::with('comments')->whereIn('created_by', $userIds)->get();
+        $posts = Post::with('comments')->whereIn('created_by', $userIds)->orderBy('updated_at', 'DESC')->get();
         return $posts;
     }
 
@@ -75,7 +78,7 @@ class PostDao implements PostDaoInterface
     public function getPublicPost(): collection
     {
         $userIds = User::select('id')->get()->pluck('id');
-        $posts = Post::with('comments')->whereIn('created_by', $userIds)->where('public_flag', true)->get();
+        $posts = Post::with('comments')->whereIn('created_by', $userIds)->where('public_flag', true)->orderBy('updated_at')->get();
 
         return $posts;
     }
@@ -88,5 +91,26 @@ class PostDao implements PostDaoInterface
     public function verifyPostExists(Request $request): bool
     {
         return Post::findOrFail($request->id) ? true : false;
+    }
+
+    /**
+     * Import csv file
+     *
+     * @param CsvUploadRequest $request
+     * @return boolean
+     */
+    public function csvImport(CsvUploadRequest $request): bool
+    {
+        DB::beginTransaction();
+        $import = new PostsImport();
+        $import->import($request->file('posts_csv'));
+        $failures = $import->failures();
+        if (count($failures) > 0) {
+            DB::rollBack();
+            return false;
+        } else {
+            DB::commit();
+            return true;
+        }
     }
 }

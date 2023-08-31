@@ -22,7 +22,7 @@
                 <div class="user-posts">
                     Post: <a href="{{ route('posts.show', $post->id) }}" alt="post">{{$post->title}}</a><br>
                     @if(count($post->comments)!=0)
-                        Comments
+                        Comments :
                         @foreach($post->comments as $comment)
                             <div class="user-comments">{{$comment->comment}}</div>
                         @endforeach

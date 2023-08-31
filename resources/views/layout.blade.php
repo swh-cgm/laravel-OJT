@@ -24,6 +24,7 @@
         <span>
             @if(Auth::check())
             @if(Route::currentRouteName()!='users.create' || Auth::user()->role != config('constants.user_role.member_no'))
+                @if(Auth::user()->isAdmin())<span><a href="{{ route('admin.index') }}" rel="admin panel">Admin Functions</a></span>@endif
                 <span><a href="{{route('users.edit', Auth::user()->id)}}" rel="user-profile">@if(Auth::user()->isAdmin()) Admin: @endif{{Auth::user()->name}}</a></span> 
                 <span><a href="{{ route('logout') }}">Logout</a></span>       
 
