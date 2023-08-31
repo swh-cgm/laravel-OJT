@@ -102,9 +102,12 @@ class AdminController extends Controller
      */
     public function postCsvUpload(CsvUploadRequest $request): RedirectResponse
     {
-        $failures = $this->adminService->postCsvUpload($request);
-
-        return back()->with('failures', $failures);
+        $status = $this->adminService->postCsvUpload($request);
+        if ($status) {
+            return back()->with('success', 'Successfully uploaded');
+        } else {
+            return back()->with('failed', 'Somehting went wrong.');
+        }
     }
 
     /**

@@ -2,10 +2,14 @@
 namespace App\Dao;
 
 use App\Contracts\Dao\PostDaoInterface;
+use App\Http\Requests\CsvUploadRequest;
+use App\Imports\PostsImport;
 use Illuminate\Support\Collection;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class PostDao implements PostDaoInterface
 {
@@ -88,5 +92,26 @@ class PostDao implements PostDaoInterface
     public function verifyPostExists(Request $request): bool
     {
         return Post::findOrFail($request->id) ? true : false;
+    }
+
+    /**
+     * Import csv file
+     *
+     * @param CsvUploadRequest $request
+     * @return boolean
+     */
+    public function csvImport(CsvUploadRequest $request): bool
+    {
+        DB::beginTransaction();
+        $import = new PostsImport();
+        $import->import($request->file('posts_csv'));
+        $failures = $import->failures();
+        if (count($failures) > 0) {
+            DB::rollBack();
+            return false;
+        } else {
+            DB::commit();
+            return true;
+        }
     }
 }

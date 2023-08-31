@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Contracts\Dao\PostDaoInterface;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\AdminServiceInterface;
 use App\Exports\PostsExport;
@@ -17,10 +18,12 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class AdminService implements AdminServiceInterface
 {
     protected $userDao;
+    protected $postDao;
 
-    public function __construct(UserDaoInterface $userDao)
+    public function __construct(UserDaoInterface $userDao, PostDaoInterface $postDao)
     {
         $this->userDao = $userDao;
+        $this->postDao = $postDao;
     }
     /**
      * Store changed password by Admin
@@ -73,14 +76,10 @@ class AdminService implements AdminServiceInterface
      * Undocumented function
      *
      * @param CsvUploadRequest $request
-     * @return array
+     * @return bool
      */
-    public function postCsvUpload(CsvUploadRequest $request): Collection
+    public function postCsvUpload(CsvUploadRequest $request): bool
     {
-        $import = new PostsImport();
-        $import->import($request->file('posts_csv'));
-        $failures = $import->failures();
-
-        return $failures;
+        return $this->postDao->csvImport($request);
     }
 }

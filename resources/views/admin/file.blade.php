@@ -21,11 +21,14 @@
                 <button type="submit">Upload</button>
             </form>
         </div>
-        @if(Session::has('failures'))
-            <p class="text-danger">Failed to insert the following rows.<p>
-            @foreach(Session::get('failures') as $failure)
-                <p>{{json_encode($failure->values())}}</p>
-            @endforeach
+        @if($message = Session::get('success'))
+            <div class="alert alert-success">
+                <p>{{ $message }}</p>
+            </div>
+        @elseif($message = Session::get('failed'))
+            <div class="alert alert-danger">
+                <p>{{ $message }}</p>
+            </div>
         @endif
     </div>
 </div>
